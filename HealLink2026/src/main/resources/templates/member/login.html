@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 | HealLink</title>
+
+</head>
+<body>
+
+<div th:replace="mainpage/header :: header"></div>
+
+<main class="login-container">
+    <!-- 카카오 로그인 -->
+    <a href="/oauth2/authorization/kakao" class="kakao-login-btn">
+        카카오 계정으로 로그인
+    </a>
+
+    <!-- 일반 로그인 -->
+    <a href="/login/form" class="login-btn">
+        회원 로그인
+    </a>
+
+    <!-- 회원가입 -->
+    <a href="/signup" class="signup-btn">
+        회원가입
+    </a>
+</main>
+
+</body>
+</html>

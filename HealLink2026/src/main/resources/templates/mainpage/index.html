@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>HealLink</title>
+
+    <!-- 전체 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+
+    <!-- 헤더 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
+    <!-- 메인 콘텐츠 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mainpage/content.css}">
+</head>
+<body>
+
+<div th:replace="mainpage/header :: header"></div>
+
+<main>
+    <!-- 검색 기능 -->
+    <section class="search">
+        <form action="/health-info" method="get">
+            <input type="text" name="query" placeholder="건강 정보 검색">
+            <button type="submit">검색</button>
+        </form>
+    </section>
+
+    <!-- 좌/우 컬럼 컨테이너 -->
+    <section class="main-content">
+        <!-- 왼쪽: 슬로건 + 공지사항 -->
+        <div class="left-column">
+            <!-- 슬로건 -->
+            <div class="slogan">
+                <div class="slogan-slide">
+                    <h2 class="slogan-title active">기다림이 부담스러운 순간</h2>
+                    <h2 class="slogan-title">두 번째 슬라이드 슬로건</h2>
+                    <h2 class="slogan-title">세 번째 슬라이드 슬로건</h2>
+                </div>
+                <div class="slogan-fixed">
+                    <h3 class="slogan-sub">보다 확실한 선택이 필요해집니다</h3>
+                    <span class="slogan-desc">신뢰할 수 있는 진료 예약 플랫폼 힐링크는<br>어디서나 당신과 진료를 잇습니다</span>
+                </div>
+            </div>
+            <!-- 공지사항 카드 -->
+            <div class="notice">
+                <h3>HealLink 최신 소식</h3>
+                <div class="notice-list">
+                    <div class="notice-item">
+                        <h4>공지 제목 1</h4>
+                        <p>공지 요약 1</p>
+                        <a href="/notice/1">자세히 보기</a>
+                    </div>
+                    <div class="notice-item">
+                        <h4>공지 제목 2</h4>
+                        <p>공지 요약 2</p>
+                        <a href="/notice/2">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 오른쪽: 배너 이미지 -->
+        <div class="right-column">
+            <!-- 메인 배너 이미지 -->
+            <div class="banner-slide">
+                <img src="/images/banner1.jpg" alt="배너1">
+                <img src="/images/banner2.jpg" alt="배너2">
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="mainpage/footer :: footer"></div>
+<script src="/js/main.js"></script>
+</body>
+</html>
