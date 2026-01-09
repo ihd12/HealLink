@@ -11,6 +11,8 @@
     <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
     <!-- 메인 콘텐츠 CSS -->
     <link rel="stylesheet" th:href="@{/css/mainpage/content.css}">
+    <!-- 푸터 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
 </head>
 <body>
 
@@ -32,12 +34,12 @@
             <!-- 슬로건 -->
             <div class="slogan">
                 <div class="slogan-slide">
-                    <h2 class="slogan-title active">기다림이 부담스러운 순간</h2>
-                    <h2 class="slogan-title">두 번째 슬라이드 슬로건</h2>
-                    <h2 class="slogan-title">세 번째 슬라이드 슬로건</h2>
+                    <h1 class="slogan-title active">기다림이 부담스러운 순간</h1>
+                    <h1 class="slogan-title">두 번째 슬라이드 슬로건</h1>
+                    <h1 class="slogan-title">세 번째 슬라이드 슬로건</h1>
                 </div>
                 <div class="slogan-fixed">
-                    <h3 class="slogan-sub">보다 확실한 선택이 필요해집니다</h3>
+                    <h2 class="slogan-sub">보다 확실한 선택이 필요해집니다</h2>
                     <span class="slogan-desc">신뢰할 수 있는 진료 예약 플랫폼 힐링크는<br>어디서나 당신과 진료를 잇습니다</span>
                 </div>
             </div>
@@ -45,15 +47,11 @@
             <div class="notice">
                 <h3>HealLink 최신 소식</h3>
                 <div class="notice-list">
-                    <div class="notice-item">
-                        <h4>공지 제목 1</h4>
-                        <p>공지 요약 1</p>
-                        <a href="/notice/1">자세히 보기</a>
-                    </div>
-                    <div class="notice-item">
-                        <h4>공지 제목 2</h4>
-                        <p>공지 요약 2</p>
-                        <a href="/notice/2">자세히 보기</a>
+                    <div class="notice-item" th:each="notice : ${notices}">
+                        <h4 th:text="${notice.title}">공지 제목</h4>
+                        <!-- Thymeleaf 내장 함수로 content 요약 -->
+                        <p th:text="${#strings.abbreviate(notice.content, 100)}">공지 요약</p>
+                        <a th:href="@{/notice/{id}(id=${notice.noticeId})}">자세히 보기</a>
                     </div>
                 </div>
             </div>
@@ -62,8 +60,8 @@
         <div class="right-column">
             <!-- 메인 배너 이미지 -->
             <div class="banner-slide">
-                <img src="/images/banner1.jpg" alt="배너1">
-                <img src="/images/banner2.jpg" alt="배너2">
+                <img th:src="@{/images/banner1.jpg}" alt="메인 배너 1">
+                <img th:src="@{/images/banner2.jpg}" alt="메인 배너 2">
             </div>
         </div>
     </section>

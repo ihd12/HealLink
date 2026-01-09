@@ -1,3 +1,11 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 | HealLink</title>
+</head>
+<body>
 <header th:fragment="header">
     <div class="header-inner">
 
@@ -20,12 +28,11 @@
         <!-- 우측: 로그인 영역 -->
         <div class="header-right">
             <!-- 비로그인 상태 -->
-            <div class="auth-guest">
-                <a href="/login">로그인</a>
-                <a href="/signup">회원가입</a>
+            <div class="auth-guest" sec:authorize="isAnonymous()">
+                <a href="/login">로그인 및 회원가입</a>
             </div>
             <!-- 로그인 상태 -->
-            <div class="auth-user">
+            <div class="auth-user" sec:authorize="isAuthenticated()">
                 <a href="/logout">로그아웃</a>
                 <a href="/mypage">마이페이지</a>
             </div>
@@ -33,3 +40,5 @@
 
     </div>
 </header>
+</body>
+</html>

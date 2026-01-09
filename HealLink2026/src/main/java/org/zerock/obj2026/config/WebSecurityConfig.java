@@ -69,7 +69,7 @@ public class WebSecurityConfig {
                 )
 //                 로그아웃 설정
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login")// 로그아웃 성공시 주소
+                        .logoutSuccessUrl("/")// 로그아웃 성공시 주소
                         .invalidateHttpSession(true))//로그아웃 시 모든 세션데이터 삭제
                 .csrf(AbstractHttpConfigurer::disable) // CSRF 사용안함 설정
 //                 .csrf(csrf -> csrf.disable()) // 람다식

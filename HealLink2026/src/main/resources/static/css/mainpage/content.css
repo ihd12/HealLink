@@ -14,7 +14,7 @@
 .search input[type="text"] {
     padding: 8px 12px;
     font-size: 1em;
-    width: 300px; /* 필요에 따라 조절 */
+    width: 600px; /* 필요에 따라 조절 */
     border: 1px solid #ccc;
     border-radius: 4px;
 }
@@ -33,10 +33,12 @@
 .main-content {
     display: flex;
     justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
     gap: 20px;
+    width: 100%;
+    margin: 0;
+    padding: 40px 20px;
+
+    align-items: stretch; /* 중요! 컬럼 높이 동일 맞춤 */
 }
 
 /* 왼쪽 컬럼: 슬로건 + 공지사항 */
@@ -49,24 +51,24 @@
 
 /* 슬로건 전체 */
 .slogan {
-    margin-bottom: 40px;
+    width: 100%;
 }
 
 /* 슬라이드 영역 */
 .slogan-slide {
+    width: 100%;
     position: relative;
     height: 40px;
     overflow: hidden;
-
-    padding: 20px;
 }
 
 .slogan-title {
+    width: 100%;
     position: absolute;
     top: 0;
     left: 0;
     opacity: 0;
-    font-size: 28px;
+    font-size: 2em;
     font-weight: bold;
     transition: opacity 0.8s ease-in-out;
 }
@@ -77,17 +79,15 @@
 
 /* 고정 텍스트 */
 .slogan-fixed {
-    margin-top: 12px;
+
 }
 
 .slogan-sub {
-    font-size: 18px;
     color: #555;
-    margin-bottom: 4px;
+    margin-bottom: 12px;
 }
 
 .slogan-desc {
-    font-size: 14px;
     color: #888;
 }
 
@@ -108,9 +108,24 @@
 /* 오른쪽 컬럼: 배너 */
 .right-column {
     flex: 1.5; /* 배너 영역을 왼쪽보다 크게 */
+    display: flex;
+    flex-direction: column;
 }
 
-.main-banner img {
+.banner-slide {
     width: 100%;
-    border-radius: 10px;
+    height: 100%;        /* ← 왼쪽 컬럼 높이에 맞춰 늘어남 */
+    overflow: hidden;      /* 넘치는 영역 숨김 */
+    position: relative;
+    border-radius: 10px;   /* 모서리 둥글게 */
+}
+
+.banner-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;     /* 이미지 비율 유지하면서 영역 채우기 */
+    display: none;         /* JS에서 첫 이미지 표시 */
+    position: absolute;
+    top: 0;
+    left: 0;
 }
