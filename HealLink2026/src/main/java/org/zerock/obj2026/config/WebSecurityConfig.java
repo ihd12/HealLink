@@ -66,7 +66,7 @@ public class WebSecurityConfig {
                         .loginPage("/login")// 로그인 페이지 주소
                         .loginProcessingUrl("/login")   // 로그인 처리 (POST)
                         .defaultSuccessUrl("/", true)// 로그인 성공시 출력할 주소
-                        .failureUrl("/login?error=true") // 로그인 실패시 주소
+                        .failureUrl("/login/form?error=true") // 로그인 실패시 주소
                         .permitAll()
                 )
 //                 로그아웃 설정

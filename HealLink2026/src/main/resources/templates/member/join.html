@@ -9,7 +9,6 @@
 <div th:replace="mainpage/header :: header"></div>
 
 <main class="join-container">
-
     <!-- 안내 문구 -->
     <div class="join-message">
         <h1>HealLink</h1>
@@ -53,15 +52,6 @@
                    placeholder="전화번호를 입력하세요">
         </div>
 
-        <!-- 회원 유형 -->
-        <div class="form-group">
-            <label for="role">회원 유형</label>
-            <select id="role" name="role">
-                <option value="PATIENT">환자</option>
-                <option value="DOCTOR">의사</option>
-            </select>
-        </div>
-
         <!-- 회원가입 버튼 -->
         <button type="submit" class="join-btn">회원가입</button>
 
@@ -70,5 +60,7 @@
             이미 회원이신가요? <a href="/login">로그인</a>
         </div>
     </form>
+</main>
+
 </body>
 </html>
