@@ -2,8 +2,9 @@ package org.zerock.obj2026.mainpage.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.zerock.obj2026.dto.NoticeDTO;
-import org.zerock.obj2026.repository.NoticeRepository;
+import org.zerock.obj2026.notice.NoticeDTO;
+import org.zerock.obj2026.notice.NoticeRepository;
+
 
 import java.util.List;
 

@@ -3,7 +3,6 @@ package org.zerock.obj2026.notice;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.zerock.obj2026.domain.Notice;
 
 import java.time.LocalDateTime;
 
