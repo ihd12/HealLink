@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>회원 로그인 | HealLink</title>
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+
+    <!-- 헤더, 푸터 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
+    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
+
+    <!-- 컨텐츠 CSS -->
+    <link rel="stylesheet" th:href="@{/css/member/loginForm.css}">
 </head>
 <body>
 
@@ -44,7 +54,7 @@
 
     <!-- 회원가입 링크 -->
     <div class="signup-text">
-        아직 회원이 아니신가요? <a href="/join">회원가입</a>
+        아직 계정이 없으신가요? <a href="/join">회원가입</a>
     </div>
 </main>
 

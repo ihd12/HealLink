@@ -1,0 +1,106 @@
+/* ===== join.css ===== */
+.join-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 80px); /* 헤더 높이 제외 */
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f5f7fa;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 안내 문구 */
+.join-container .join-message {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.join-container .join-message h1 {
+    font-size: 2.8rem;
+    color: #2f89fc;
+    margin-bottom: 8px;
+}
+
+.join-container .join-message p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* ===== Form 스타일 ===== */
+.join-container form {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    box-sizing: border-box;
+}
+
+.join-container .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.join-container label {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.join-container input[type="email"],
+.join-container input[type="password"],
+.join-container input[type="text"],
+.join-container input[type="tel"] {
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.join-container input:focus {
+    border-color: #2f89fc;
+}
+
+/* 회원가입 버튼 */
+.join-container .join-btn {
+    width: 100%;
+    padding: 12px 0;
+    background-color: #2f89fc;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.join-container .join-btn:hover {
+    background-color: #1565d8;
+}
+
+/* 로그인 링크 */
+.join-container .signup-text {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+}
+
+.join-container .signup-text a {
+    color: #555; /* 진한 회색 */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.join-container .signup-text a:hover {
+    text-decoration: underline;
+    color: #333;
+}
