@@ -1,53 +1,45 @@
-package org.zerock.obj2026.notice;
+package org.zerock.obj2026.healthinfo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.zerock.obj2026.member.domain.User;
 
 import java.time.LocalDateTime;
+
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@ToString(exclude = "writer")
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@DynamicInsert // To apply @ColumnDefault on insert
-@Table(name = "notice")
-public class Notice {
+@Table(name = "health_info")
+public class HealthInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notice_id")
-    private Long noticeId;
+    @Column(name = "health_info_id")
+    private Long healthInfoId;
 
     @Column(nullable = false, length = 200)
     private String title;
 
     @Lob
+    private String summary;
+
+    @Lob
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "writer_id", nullable = false)
-    private User writer;
-
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @ColumnDefault("0")
-    private Integer viewCount;
+    private HealthInfoCategory category;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @ColumnDefault("false")
-    private Boolean isPinned;
-
-    @Column(nullable = false)
-    @ColumnDefault("false")
-    private Boolean isDeleted;
+    private HealthInfoSourceType sourceType;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -56,4 +48,12 @@ public class Notice {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    // 수정용
+    public void update(String title, String content, HealthInfoCategory category, HealthInfoSourceType sourceType) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.sourceType = sourceType;
+    }
 }
