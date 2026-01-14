@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>새 건강 정보 등록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="p-5">
+<div class="container">
+    <h2>새 건강 정보 등록</h2>
+    <hr>
+
+    <form id="createForm">
+        <div class="form-group">
+            <label for="title" class="font-weight-bold">제목</label>
+            <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="font-weight-bold">카테고리</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="category" id="cat1" value="PUBLIC_CENTER" checked>
+                        <label class="form-check-label" for="cat1">보건소 소식</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="category" id="cat2" value="VACCINATION_CHECKUP">
+                        <label class="form-check-label" for="cat2">예방접종/검진</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="font-weight-bold">출처 타입</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="sourceType" id="src1" value="PUBLIC_CENTER" checked>
+                        <label class="form-check-label" for="src1">보건소</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="sourceType" id="src2" value="MEDICAL_SITE">
+                        <label class="form-check-label" for="src2">의료기관</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="content" class="font-weight-bold">내용</label>
+            <textarea class="form-control bg-light" id="content" rows="10" placeholder="내용을 입력하세요" required></textarea>
+        </div>
+
+        <div class="text-right">
+            <button type="button" class="btn btn-primary" onclick="submitData()">저장하기</button>
+            <a href="/healthinfo" class="btn btn-outline-secondary">취소</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function submitData() {
+        // 1. 라디오 버튼 값 가져오기
+        const category = document.querySelector('input[name="category"]:checked').value;
+        const sourceType = document.querySelector('input[name="sourceType"]:checked').value;
+
+        // 2. 데이터 객체 생성 (DTO 필드명과 일치)
+        const postData = {
+            title: document.getElementById('title').value,
+            content: document.getElementById('content').value,
+            category: category,
+            sourceType: sourceType
+        };
+
+        // 간단한 유효성 검사
+        if(!postData.title || !postData.content) {
+            alert("제목과 내용을 입력해주세요.");
+            return;
+        }
+
+        // 3. Axios 전송 (우리 API 주소로!)
+        axios.post('/api/healthinfo', postData)
+            .then(res => {
+                alert("성공적으로 등록되었습니다!");
+                location.href = "/healthinfo"; // 등록 후 목록 이동
+            })
+            .catch(err => {
+                console.error(err);
+                alert("저장 중 에러가 발생했습니다.");
+            });
+    }
+</script>
+</body>
+</html>

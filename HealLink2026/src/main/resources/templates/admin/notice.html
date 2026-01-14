@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 - 공지사항 목록</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+<h2>공지사항 목록</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>조회수</th>
+        <th>작성일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="notice : ${noticeList}" th:classappend="${notice.isPinned} ? 'pinned-row' : ''">
+        <td th:text="${notice.noticeId}">1</td>
+        <td>
+            <span th:if="${notice.isPinned}" style="color: red; font-weight: bold;">[필독]</span>
+
+            <a th:href="@{/admin/notice/{id}(id=${notice.noticeId})}" th:text="${notice.title}">제목</a>
+        </td>
+        <td th:text="${notice.writerName}">작성자</td>
+        <td th:text="${notice.viewCount}">0</td>
+        <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(noticeList)}">
+        <td colspan="5">등록된 공지사항이 없습니다.</td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<button type="button" onclick="location.href='/admin/notice/create'">공지사항 등록</button>
+</body>
+</html>
