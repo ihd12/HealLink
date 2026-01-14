@@ -1,0 +1,47 @@
+/* 푸터 전체 스타일 */
+footer {
+    background-color: #f8f8f8;    /* 밝은 회색 배경 */
+    color: #555;                  /* 기본 글자 색 */
+    font-size: 14px;
+    padding: 20px 0;
+}
+
+/* ===== 위쪽 링크 ===== */
+.footer-top {
+    mx-width: 1500px;
+    margin: 0;      /* 가운데 정렬 */
+    padding: 0 20px;     /* 좌우 여백 */
+    text-align: left;    /* 글자 왼쪽 정렬 */
+    margin-bottom: 12px;
+}
+
+.footer-top a {
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 10px;   /* 링크 사이 공백 */
+    transition: color 0.3s;
+}
+
+.footer-top a:last-child {
+    margin-right: 0;      /* 마지막 링크는 오른쪽 공백 제거 */
+}
+
+.footer-top a:hover {
+    color: #000;                  /* 호버 시 진하게 */
+}
+
+/* ===== 아래쪽 회사 정보 ===== */
+.footer-bottom {
+    width: 100%;   /* 메인 콘텐츠와 동일 너비 */
+    margin: 0;      /* 가운데 정렬 */
+    padding: 0 20px;     /* 좌우 여백 */
+    text-align: left;    /* 글자 왼쪽 정렬 */
+    font-size: 12px;
+    color: #888;
+    line-height: 1.6;
+}
+
+.footer-bottom p {
+    margin: 2px 0;                /* 문단 간격 좁게 */
+}

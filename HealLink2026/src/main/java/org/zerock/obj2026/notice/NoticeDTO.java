@@ -3,6 +3,7 @@ package org.zerock.obj2026.notice;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.zerock.obj2026.admin.notice.domain.Notice;
 
 import java.time.LocalDateTime;
 
@@ -21,4 +22,15 @@ public class NoticeDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public NoticeDTO(Notice notice){
+        this.noticeId = notice.getNoticeId();
+        this.title = notice.getTitle();
+        this.content = notice.getContent();
+        this.writerId = notice.getWriter().getUserId();
+        this.viewCount = notice.getViewCount();
+        this.isPinned = notice.getIsPinned();
+        this.isDeleted = notice.getIsDeleted();
+        this.createdAt = notice.getCreatedAt();
+        this.updatedAt = notice.getUpdatedAt();
+    }
 }

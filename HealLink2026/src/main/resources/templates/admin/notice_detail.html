@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항 상세조회</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<h2>공지사항 상세조회</h2>
+<hr>
+<div>
+    <p><strong>번호:</strong> <span th:text="${notice.noticeId}">1</span></p>
+    <p><strong>제목:</strong> <span th:text="${notice.title}">제목</span></p>
+    <p><strong>작성자:</strong> <span th:text="${notice.writerName}">작성자</span></p>
+    <p><strong>작성일:</strong> <span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span></p>
+    <p><strong>조회수:</strong> <span th:text="${notice.viewCount}">0</span></p>
+</div>
+<hr>
+<div style="min-height: 200px; border: 1px solid #ccc; padding: 10px;">
+    <p th:text="${notice.content}" style="white-space: pre-wrap;">내용이 여기에 나옵니다.</p>
+</div>
+<hr>
+
+<button type="button" onclick="location.href='/admin/notice'">목록으로</button>
+<button type="button" th:onclick="|location.href='/admin/notice/modify/${notice.noticeId}'|">수정하기</button>
+
+<button type="button" style="background-color: #ff4d4f; color: white; border: none; padding: 5px 10px; cursor: pointer;"
+        onclick="deleteNotice()">삭제하기</button>
+
+<script th:inline="javascript">
+    function deleteNotice() {
+        // Thymeleaf 변수를 자바스크립트에서 안전하게 가져옴
+        const noticeId = /*[[${notice.noticeId}]]*/ 0;
+
+        if (confirm("정말로 이 공지사항을 삭제하시겠습니까?")) {
+            // API 호출 (Soft Delete를 수행하는 컨트롤러 주소)
+            axios.delete('/api/admin/notice/' + noticeId)
+                .then(response => {
+                    alert("공지사항이 삭제되었습니다.");
+                    location.href = '/admin/notice'; // 목록 페이지로 리다이렉트
+                })
+                .catch(error => {
+                    console.error("삭제 실패:", error);
+                    alert("삭제 처리 중 오류가 발생했습니다.");
+                });
+        }
+    }
+</script>
+
+</body>
+</html>

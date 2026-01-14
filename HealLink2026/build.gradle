@@ -56,6 +56,9 @@ dependencies {
 
 //    Thymeleaf 레이아웃 라이브러리
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+    // @NotBlank랑 @Valid 쓰려고 추가했습니다 : 2026-01-12
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {

@@ -1,0 +1,44 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 | HealLink</title>
+</head>
+<body>
+<header th:fragment="header">
+    <div class="header-inner">
+
+        <!-- 좌측: 플랫폼 로고 -->
+        <div class="header-left">
+            <a href="/" class="logo">HealLink</a>
+        </div>
+
+        <!-- 중앙: 내비게이션 -->
+        <nav class="header-center">
+            <ul class="nav-list">
+                <li><a href="/">홈</a></li>
+                <li><a href="/reservation">진료 예약</a></li>
+                <li><a href="/pharmacy">약국 찾기</a></li>
+                <li><a href="/health-info">건강 정보</a></li>
+                <li><a href="/notice">공지사항</a></li>
+            </ul>
+        </nav>
+
+        <!-- 우측: 로그인 영역 -->
+        <div class="header-right">
+            <!-- 비로그인 상태 -->
+            <div class="auth-guest" sec:authorize="isAnonymous()">
+                <a href="/login">로그인 및 회원가입</a>
+            </div>
+            <!-- 로그인 상태 -->
+            <div class="auth-user" sec:authorize="isAuthenticated()">
+                <a href="/logout">로그아웃</a>
+                <a href="/mypage">마이페이지</a>
+            </div>
+        </div>
+
+    </div>
+</header>
+</body>
+</html>

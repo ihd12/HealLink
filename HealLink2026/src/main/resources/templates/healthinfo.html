@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>건강 정보 목록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <style>
+        .card-title a, .summary-link { color: inherit; text-decoration: none; display: block; }
+        .card-title a:hover, .summary-link:hover { color: #007bff; text-decoration: underline; cursor: pointer; }
+        .summary-text { color: #666; font-size: 0.9rem; }
+    </style>
+</head>
+<body class="p-5">
+<div class="container">
+    <h2>건강 정보 테스트 목록</h2>
+    <hr>
+    <a th:href="@{/healthinfo/create}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> 새 정보 등록
+    </a>
+
+
+
+    <div th:if="${healthInfoList == null or healthInfoList.isEmpty()}">
+        <p>데이터가 없습니다. DB를 확인하세요!</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4" th:each="item : ${healthInfoList}">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    ID: <span th:text="${item.id}"></span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a th:href="@{/healthinfo/{id}(id=${item.id})}" th:text="${item.title}"></a>
+                    </h5>
+
+                    <a th:href="@{/healthinfo/{id}(id=${item.id})}" class="summary-link mb-3">
+                        <p class="summary-text text-truncate" th:text="${item.summary}">요약 정보가 출력됩니다.</p>
+                    </a>
+
+                    <div class="mb-3">
+                        <span class="badge badge-info" th:text="${item.category}"></span>
+                        <span class="badge badge-info" th:text="${item.sourceType}"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>최초 등록:</strong>
+                        <span th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                    </div>
+                    <div class="col-md-6 text-md-right">
+                        <strong>최종 수정:</strong>
+                        <span th:text="${#temporals.format(item.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                    </div>
+
+                    <a th:href="@{/healthinfo/{id}(id=${item.id})}" class="btn btn-sm btn-outline-primary btn-block">상세보기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
