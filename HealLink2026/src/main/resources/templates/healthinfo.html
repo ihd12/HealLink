@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>건강 정보 목록</title>
+    <title>건강 정보 목록 (Axios)</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         .card-title a, .summary-link { color: inherit; text-decoration: none; display: block; }
         .card-title a:hover, .summary-link:hover { color: #007bff; text-decoration: underline; cursor: pointer; }
@@ -12,52 +13,184 @@
 </head>
 <body class="p-5">
 <div class="container">
-    <h2>건강 정보 테스트 목록</h2>
+    <h2>건강 정보 목록 (Axios + Paging)</h2>
     <hr>
-    <a th:href="@{/healthinfo/create}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> 새 정보 등록
-    </a>
+    <a href="/healthinfo/create" class="btn btn-primary mb-3">새 정보 등록</a>
 
-
-
-    <div th:if="${healthInfoList == null or healthInfoList.isEmpty()}">
-        <p>데이터가 없습니다. DB를 확인하세요!</p>
+    <div class="input-group mt-3">
+        <input type="text" id="search-keyword" class="form-control" placeholder="제목으로 검색하세요...">
+        <div class="input-group-append">
+            <button class="btn btn-dark" type="button" onclick="loadList(0)">검색</button>
+        </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-4 mb-4" th:each="item : ${healthInfoList}">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    ID: <span th:text="${item.id}"></span>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 border-right">
+                    <h6 class="font-weight-bold text-primary">카테고리</h6>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input filter-category" type="checkbox" value="PUBLIC_CENTER" id="cat1">
+                        <label class="form-check-label" for="cat1">보건소 소식</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input filter-category" type="checkbox" value="VACCINATION_CHECKUP" id="cat2">
+                        <label class="form-check-label" for="cat2">예방접종/검진</label>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a th:href="@{/healthinfo/{id}(id=${item.id})}" th:text="${item.title}"></a>
-                    </h5>
-
-                    <a th:href="@{/healthinfo/{id}(id=${item.id})}" class="summary-link mb-3">
-                        <p class="summary-text text-truncate" th:text="${item.summary}">요약 정보가 출력됩니다.</p>
-                    </a>
-
-                    <div class="mb-3">
-                        <span class="badge badge-info" th:text="${item.category}"></span>
-                        <span class="badge badge-info" th:text="${item.sourceType}"></span>
+                <div class="col-md-6">
+                    <h6 class="font-weight-bold text-success">출처</h6>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input filter-source" type="checkbox" value="PUBLIC_CENTER" id="src1">
+                        <label class="form-check-label" for="src1">보건소</label>
                     </div>
-
-                    <div class="col-md-6">
-                        <strong>최초 등록:</strong>
-                        <span th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input filter-source" type="checkbox" value="MEDICAL_SITE" id="src2">
+                        <label class="form-check-label" for="src2">의료 사이트</label>
                     </div>
-                    <div class="col-md-6 text-md-right">
-                        <strong>최종 수정:</strong>
-                        <span th:text="${#temporals.format(item.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
-                    </div>
-
-                    <a th:href="@{/healthinfo/{id}(id=${item.id})}" class="btn btn-sm btn-outline-primary btn-block">상세보기</a>
                 </div>
+            </div>
+            <div class="text-right mt-3">
+                <button class="btn btn-primary btn-sm" onclick="loadList(0)">필터 적용</button>
+                <button class="btn btn-outline-secondary btn-sm" onclick="resetFilters()">초기화</button>
             </div>
         </div>
     </div>
+
+    <div class="row" id="list-container">
+    </div>
+
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center" id="pagination-container">
+        </ul>
+    </nav>
 </div>
+
+<script>
+    // 1. 페이지 로드 시 목록 불러오기
+    document.addEventListener('DOMContentLoaded', function() {
+        loadList(0); // 첫 페이지(0) 호출
+    });
+
+    function loadList(page) {
+        // 1. 체크된 카테고리 모으기 (PUBLIC_CENTER, VACCINATION_CHECKUP)
+        const categories = Array.from(document.querySelectorAll('.filter-category:checked'))
+            .map(cb => cb.value);
+
+        // 2. 체크된 출처 모으기 (PUBLIC_CENTER, MEDICAL_SITE)
+        const sources = Array.from(document.querySelectorAll('.filter-source:checked'))
+            .map(cb => cb.value);
+
+        // 추가: 검색어 가져오기
+        const keyword = document.getElementById('search-keyword').value;
+        console.log("현재 입력된 검색어: [" + keyword + "]"); // 로그 확인용
+
+
+        axios.get('/api/healthinfo', {
+            params: {
+                page: page,
+                categories: categories.join(','),
+                sources: sources.join(','),
+                keyword: keyword // 서버로 키워드 전달
+            }
+        })
+            .then(response => {
+                renderList(response.data.content);
+                renderPagination(response.data);
+            })
+            .catch(error => console.error('검색 에러:', error));
+
+    }
+
+    // 필터 초기화 함수
+    function resetFilters() {
+        document.querySelectorAll('.form-check-input').forEach(cb => cb.checked = false);
+        loadList(0);
+    }
+
+    // 2. 목록 그리기 함수
+    function renderList(list) {
+        const container = document.getElementById('list-container');
+        container.innerHTML = '';
+
+        // --- [수정 구간: 매핑 객체 정의] ---
+        const categoryMap = {
+            'PUBLIC_CENTER': '보건소 소식',
+            'VACCINATION_CHECKUP': '예방접종/검진'
+        };
+
+        const sourceMap = {
+            'PUBLIC_CENTER': '보건소',
+            'MEDICAL_SITE': '의료 사이트'
+        };
+        // -------------------------------
+
+        if (list.length === 0) {
+            container.innerHTML = '<p class="col-12 text-center">데이터가 없습니다.</p>';
+            return;
+        }
+
+        list.forEach(item => {
+            const date = item.createdAt ? item.createdAt.replace('T', ' ').substring(0, 16) : '-';
+
+            // --- [수정 구간: 한글 명칭으로 변환] ---
+            // 매핑된 값이 없으면 원래 값(item.category)을 보여줌
+            const categoryName = categoryMap[item.category] || item.category;
+            const sourceName = sourceMap[item.sourceType] || item.sourceType;
+            // -----------------------------------
+
+            const html = `
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white d-flex justify-content-between">
+                    <h5 class="mb-0" style="font-size: 1.1rem; font-weight: 700;">
+                        <a href="/healthinfo/${item.id}" class="text-white text-decoration-none">
+                            ${item.title}
+                        </a>
+                    </h5>
+                </div>
+
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text text-secondary mb-3" style="font-size: 0.9rem; line-height: 1.5;">
+                        <a href="/healthinfo/${item.id}">
+                        ${item.summary || '요약 정보가 없습니다.'}
+                        </a>
+                    </p>
+                    <p class="summary-text text-truncate mb-3" style="max-height: 3rem;">
+                        <small>${date}</small>
+                    </p>
+
+                    <div class="mt-auto mb-3">
+                        <span class="badge badge-info p-2">${categoryName}</span>
+                        <p></p>
+                        <span class="badge badge-success p-2">${sourceName}</span>  에서 제공한 정보입니다
+                    </div>
+
+                    <a href="/healthinfo/${item.id}" class="btn btn-sm btn-outline-primary btn-block">상세보기</a>
+                </div>
+            </div>
+        </div>`;
+            container.insertAdjacentHTML('beforeend', html);
+        });
+    }
+
+    // 3. 페이징 버튼 생성 함수
+    function renderPagination(pageData) {
+        const container = document.getElementById('pagination-container');
+        container.innerHTML = '';
+
+        const totalPages = pageData.totalPages;
+        const currentPage = pageData.number;
+
+        for (let i = 0; i < totalPages; i++) {
+            const activeClass = (i === currentPage) ? 'active' : '';
+            const li = `
+                <li class="page-item ${activeClass}">
+                    <a class="page-link" href="javascript:void(0)" onclick="loadList(${i})">${i + 1}</a>
+                </li>`;
+            container.insertAdjacentHTML('beforeend', li);
+        }
+    }
+</script>
 </body>
 </html>

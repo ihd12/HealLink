@@ -1,95 +1,139 @@
-HTML
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> <head>
-    <meta charset="UTF-8">
-    <title>관리자 - 공지사항 목록</title>
-    <style>
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-        th { background-color: #f4f4f4; }
-        .user-info { background: #e9ecef; padding: 10px; margin-bottom: 20px; border-radius: 5px; }
-        .pinned-row { background-color: #fff9db; }
-    </style>
-</head>
-<body>
+    <html xmlns:th="http://www.thymeleaf.org"
+          xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8">
+        <title>관리자 - 공지사항 목록</title>
+        <style>
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+            th { background-color: #f4f4f4; }
+            .user-info { background: #e9ecef; padding: 10px; margin-bottom: 20px; border-radius: 5px; }
+            .pinned-row { background-color: #fff9db; }
+            .active { font-weight: bold; color: blue; }
+            .pagination { display: flex; list-style: none; justify-content: center; padding: 0; margin-top: 20px; }
+            .pagination li { margin: 0 5px; }
+        </style>
+    </head>
+    <body>
 
-<div class="user-info">
-    <div sec:authorize="isAuthenticated()">
-        <strong>현재 접속자:</strong>
-        ID: <span th:text="${#authentication.principal.username}">email@test.com</span>
-        (이메일 동일)
+    <div class="user-info">
+        <div sec:authorize="isAuthenticated()">
+            <strong>현재 접속자:</strong>
+            ID: <span th:text="${#authentication.principal.username}">email@test.com</span>
+            <button type="button" onclick="location.href='/logout'">로그아웃</button>
+        </div>
+        <div sec:authorize="isAnonymous()">
+            <strong>현재 상태:</strong> 비로그인 상태
+            <button type="button" onclick="location.href='/login'">로그인</button>
+        </div>
+    </div>
 
-        <p>내 권한: <span th:text="${#authentication.authorities}">ROLE_USER</span></p>
-        <button type="button" onclick="location.href='/logout'">로그아웃</button>
+    <h2>공지사항 목록</h2>
 
-        <form th:action="@{/logout}" method="post">
-            <button type="submit">임시 로그아웃</button>
+    <div style="margin-bottom: 20px;">
+        <form action="/admin/notice" method="get" id="searchForm">
+            <input type="hidden" name="page" value="1">
+
+            <select name="types" style="padding: 5px;">
+                <option value="tc" th:selected="${responseDTO.pageRequestDTO.types == 'tc'}">제목+내용</option>
+                <option value="t" th:selected="${responseDTO.pageRequestDTO.types == 't'}">제목</option>
+                <option value="c" th:selected="${responseDTO.pageRequestDTO.types == 'c'}">내용</option>
+
+            </select>
+
+            <input type="text" name="keyword"
+                   th:value="${responseDTO.pageRequestDTO.keyword}"
+                   placeholder="검색어를 입력하세요"
+                   style="padding: 5px; width: 200px;">
+
+            <button type="submit" style="padding: 5px 15px;">검색</button>
+            <button type="button" onclick="location.href='/admin/notice'" style="padding: 5px 10px;">초기화</button>
         </form>
     </div>
-    <div sec:authorize="isAnonymous()">
-        <strong>현재 상태:</strong> 비로그인 상태 (글쓰기가 제한됩니다.)
-        <button type="button" onclick="location.href='/login'">로그인하러 가기</button>
+
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>조회수</th>
+            <th>작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="notice : ${responseDTO.pinnedList}" class="pinned-row">
+            <td><span style="font-weight: bold; color: #d9480f;">[공지]</span></td>
+            <td>
+                <span style="color: red; font-weight: bold;">[필독]</span>
+                <a th:href="@{/admin/notice/{id}(id=${notice.noticeId}, page=${responseDTO.pageRequestDTO.page}, types=${responseDTO.pageRequestDTO.types}, keyword=${responseDTO.pageRequestDTO.keyword})}"
+                   th:text="${notice.title}" style="font-weight: bold;">고정된 제목</a>
+            </td>
+            <td th:text="${notice.writerName}">작성자</td>
+            <td th:text="${notice.viewCount}">0</td>
+            <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</td>
+        </tr>
+
+        <tr th:each="notice : ${responseDTO.dtoList}">
+            <td th:text="${notice.noticeId}">1</td>
+            <td>
+                <a th:href="@{/admin/notice/{id}(id=${notice.noticeId}, page=${responseDTO.pageRequestDTO.page}, types=${responseDTO.pageRequestDTO.types}, keyword=${responseDTO.pageRequestDTO.keyword})}"
+                   th:text="${notice.title}">일반 제목</a>
+            </td>
+            <td th:text="${notice.writerName}">작성자</td>
+            <td th:text="${notice.viewCount}">0</td>
+            <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(responseDTO.dtoList) && #lists.isEmpty(responseDTO.pinnedList)}">
+            <td colspan="5">등록된 공지사항이 없습니다.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <div sec:authorize="hasRole('ADMIN')">
+        <button type="button" th:onclick="checkLoginAndRedirect()">공지사항 등록</button>
     </div>
-</div>
 
-<h2>공지사항 목록</h2>
+    <div class="pagination">
+        <ul style="list-style: none; display: flex; padding: 0;">
+            <li th:if="${responseDTO.prev}">
+                <a th:href="|@{/admin/notice}${responseDTO.pageRequestDTO.getLink(responseDTO.start - 1)}|">이전</a>
+            </li>
 
-<table>
-    <thead>
-    <tr>
-        <th>번호</th>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>조회수</th>
-        <th>작성일</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="notice : ${noticeList}" th:classappend="${notice.isPinned} ? 'pinned-row' : ''">
-        <td th:text="${notice.noticeId}">1</td>
-        <td>
-            <span th:if="${notice.isPinned}" style="color: red; font-weight: bold;">[필독]</span>
-            <a th:href="@{/admin/notice/{id}(id=${notice.noticeId})}" th:text="${notice.title}">제목</a>
-        </td>
-        <td th:text="${notice.writerName}">작성자</td>
-        <td th:text="${notice.viewCount}">0</td>
-        <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</td>
-    </tr>
-    <tr th:if="${#lists.isEmpty(noticeList)}">
-        <td colspan="5">등록된 공지사항이 없습니다.</td>
-    </tr>
-    </tbody>
-</table>
+            <th:block th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <li>
+                    <a th:href="|@{/admin/notice}${responseDTO.pageRequestDTO.getLink(num)}|"
+                       th:text="${num}"
+                       th:class="${responseDTO.page == num} ? 'active' : ''"
+                       th:style="${responseDTO.page == num} ? 'font-weight: bold; color: blue;' : ''">1</a>
+                </li>
+            </th:block>
 
-<br>
+            <li th:if="${responseDTO.next}">
+                <a th:href="|@{/admin/notice}${responseDTO.pageRequestDTO.getLink(responseDTO.end + 1)}|">다음</a>
+            </li>
+        </ul>
+    </div>
 
-<div sec:authorize="hasRole('ADMIN')">
-    <button type="button" th:onclick="checkLoginAndRedirect()">공지사항 등록</button>
-</div>
-
-<div sec:authorize="isAuthenticated() and !hasRole('ADMIN')">
-    <p>※ 공지사항 작성 권한이 없습니다.</p>
-</div>
-
-<script th:inline="javascript">
-    function checkLoginAndRedirect() {
-        /* Spring Security의 인증 여부를 자바스크립트 변수로 가져옴 */
-        const isAuthenticated = [[${#authorization.expression('isAuthenticated()')}]];
-
-        if (!isAuthenticated) {
-            alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
-            location.href = '/login'; // 프로젝트의 로그인 경로에 맞게 수정하세요
-        } else {
-            location.href = '/admin/notice/create';
+    <script th:inline="javascript">
+        function checkLoginAndRedirect() {
+            const isAuthenticated = [[${#authorization.expression('isAuthenticated()')}]];
+            if (!isAuthenticated) {
+                alert("로그인이 필요한 서비스입니다.");
+                location.href = '/login';
+            } else {
+                location.href = '/admin/notice/create';
+            }
         }
-    }
-</script>
+    </script>
 
-<script th:if="${error}">
-    alert([[${error}]]);
-</script>
+    <script th:if="${error}">
+        alert([[${error}]]);
+    </script>
 
-</body>
+    </body>
 </html>

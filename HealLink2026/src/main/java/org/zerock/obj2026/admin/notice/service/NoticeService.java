@@ -3,15 +3,20 @@ package org.zerock.obj2026.admin.notice.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.zerock.obj2026.admin.notice.domain.Notice;
 import org.zerock.obj2026.admin.notice.dto.NoticeAddRequest;
+import org.zerock.obj2026.admin.notice.dto.NoticePageRequestDTO;
+import org.zerock.obj2026.admin.notice.dto.NoticePageResponseDTO;
 import org.zerock.obj2026.admin.notice.dto.NoticeResponse;
 import org.zerock.obj2026.admin.notice.repository.NoticeRepository;
 import org.zerock.obj2026.member.domain.User;
 
 import org.zerock.obj2026.member.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -22,11 +27,35 @@ public class NoticeService {
     private final UserRepository userRepository; // 이것도 필요
 
     // 1. 목록 .findAll
-    public List<NoticeResponse> findAll() {
-        return noticeRepository.findAllByIsDeletedFalseOrderByIsPinnedDescCreatedAtDesc() // [삭제글은 안보이게] [고정글은 위로] [최신순 조회]
-                .stream()
-                .map(NoticeResponse::fromEntity) // 2. 정적 메서드로 변환 (::new와 비슷함) 만들었던 fromEntity 사용
-                .toList(); // 3. 리스트로 반환
+    public NoticePageResponseDTO<NoticeResponse> findAll(NoticePageRequestDTO pageRequestDTO) {
+
+        // 1. 일반글 페이징 조회 (QueryDSL 사용 - 이 안에서 isPinned=false 처리가 되어 있어야 함)
+        Page<Notice> result = noticeRepository.searchAll(pageRequestDTO);
+
+        // 2. 고정글 리스트 준비 (기본값은 빈 리스트)
+        List<NoticeResponse> pinnedList = new ArrayList<>();
+
+        // [핵심] 검색어가 없을 때만 상단 고정글을 가져옴 (필요에 따라 조건 수정 가능)
+        if (pageRequestDTO.getKeyword() == null || pageRequestDTO.getKeyword().trim().isEmpty()) {
+            // Repository에 @Query로 만든 메서드 호출
+            pinnedList = noticeRepository.findPinnedNotices()
+                    .stream()
+                    .map(NoticeResponse::fromEntity)
+                    .toList();
+        }
+
+        // 3. 일반글 리스트 변환
+        List<NoticeResponse> dtoList = result.getContent().stream()
+                .map(NoticeResponse::fromEntity)
+                .toList();
+
+        // 4. 최종 조립 (pinnedList를 추가!)
+        return NoticePageResponseDTO.<NoticeResponse>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .pinnedList(pinnedList) // <-- 새로 만든 필드에 주입!
+                .total((int)result.getTotalElements())
+                .build();
     }
 
     // 2. 상세 조회 .findById->
@@ -71,16 +100,16 @@ public class NoticeService {
     // 5. 삭제 .delete(도메인)
     @Transactional
     public void deleteNotice(Long noticeId, Long userId) {
-        // 1. 대상 찾기
+        // 1) 대상 찾기
         Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 공지사항이 없습니다. id=" + noticeId));
 
-        // 2. 권한 체크
+        // 2) 권한 체크
         if (!notice.getWriter().getUserId().equals(userId)) {
             throw new RuntimeException("본인이 작성한 글만 삭제할 수 있습니다.");
         }
 
-        // 3. 삭제 -> (엔티티의 delete 메서드) 주의 : 여기는 소프트 딜리트임
+        // 3) 삭제 -> (엔티티의 delete 메서드), 주의 : 여기는 소프트 딜리트
         notice.delete();
     }
 

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -61,10 +62,18 @@ public class WebSecurityConfig {
 //                         위의 url이외에 모든 url은 로그인이 필요하도록 설정
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 
-                        // 관리자만 쓰기 수정 삭제 가능 2026-01-14
-                        .requestMatchers("/admin/notice/create/**", "/admin/notice/modify/**", "/admin/notice/delete/**").hasRole("ADMIN")
-
+                        // notice, healthinfo 관리자만 쓰기 수정 2026-01-15
+                        .requestMatchers("/admin/notice/create/**",
+                                "/admin/notice/modify/**",
+                                "/healthinfo/create/**",
+                                "/healthinfo/modify/**")
+                        .hasRole("ADMIN")
+                        // notice, healthinfo 관리자만 삭제 2026-01-15
+                        .requestMatchers(HttpMethod.DELETE, "/api/admin/notice/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/healthinfo/**").hasRole("ADMIN")
+                        // 나중에 전체 확정나면 permitAll을 적절하게 수정
                         .anyRequest().permitAll())
+
 //                 form태그를 사용한 로그인 관련 설정
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")// 로그인 페이지 주소

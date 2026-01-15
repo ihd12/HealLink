@@ -21,7 +21,10 @@
 </div>
 <hr>
 
-<button type="button" onclick="location.href='/admin/notice'">목록으로</button>
+<a th:href="@{/admin/notice(page=${pageRequestDTO.page}, size=${pageRequestDTO.size}, types=${pageRequestDTO.types}, keyword=${pageRequestDTO.keyword})}">
+    <button type="button" style="padding: 5px 15px; cursor: pointer;">목록보기</button>
+</a>
+
 <button type="button" th:onclick="|location.href='/admin/notice/modify/${notice.noticeId}'|">수정하기</button>
 
 <button type="button" style="background-color: #ff4d4f; color: white; border: none; padding: 5px 10px; cursor: pointer;"
