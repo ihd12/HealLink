@@ -52,6 +52,14 @@ public class UserSecurityDTO implements OAuth2User, UserDetails {
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
                     new SimpleGrantedAuthority("ROLE_USER"));
         }
+        else if(user.getRole().equals(UserRole.PATIENT)){
+            return List.of(new SimpleGrantedAuthority("ROLE_PATIENT"),
+                    new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        else if(user.getRole().equals(UserRole.DOCTOR)){
+            return List.of(new SimpleGrantedAuthority("ROLE_DOCTOR"),
+                    new SimpleGrantedAuthority("ROLE_USER"));
+        }
 //         유저가 가진 권환을 반환하는 메서드
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }

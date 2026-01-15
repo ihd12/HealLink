@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>예약 상세 | HealLink</title>
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+
+    <!-- 헤더 / 푸터 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
+    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
+
+    <!-- 마이페이지 사이드바 및 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mypage/sidebar.css}">
+
+    <!-- 마이페이지 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+</head>
+<body>
+
+<!-- 헤더 -->
+<div th:replace="mainpage/header :: header"></div>
+
+<main class="mypage-wrapper">
+
+    <!-- 사이드바 -->
+    <div th:replace="mypage/sidebar :: sidebar('reservation')"></div>
+
+    <!-- 컨텐츠 영역 -->
+    <section class="mypage-content">
+
+        <h2 class="content-title">내 예약 상세</h2>
+
+        <!-- 예약 상세 카드 -->
+        <div class="reservation-detail-card">
+
+            <!-- 1️⃣ 상단 : 캘린더 -->
+            <div class="reservation-calendar">
+                <!-- 실제 캘린더 JS 붙일 자리 -->
+                <div class="calendar-placeholder">
+                    📅 예약 캘린더
+                </div>
+            </div>
+
+            <!-- 2️⃣ 예약 정보 -->
+            <div class="reservation-info">
+
+                <p class="reservation-datetime">
+                    2025년 1월 10일 · 14:30
+                </p>
+
+                <p class="reservation-visit">
+                    3번째 방문
+                </p>
+
+                <div class="reservation-hospital">
+                    <strong>ㄱ성형외과</strong>
+                    <span>김철수 원장 · 성형외과</span>
+                </div>
+
+            </div>
+
+            <!-- 3️⃣ 하단 버튼 -->
+            <div class="reservation-actions">
+                <button class="btn btn-change">
+                    예약 변경
+                </button>
+                <button class="btn btn-cancel">
+                    예약 취소
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+</main>
+
+<!-- 푸터 -->
+<div th:replace="mainpage/footer :: footer"></div>
+
+</body>
+</html>

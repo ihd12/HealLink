@@ -1,0 +1,93 @@
+/* ===== 예약 목록 ===== */
+.reservation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ===== 예약 카드 ===== */
+.reservation-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.reservation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+/* 왼쪽 정보 영역 */
+.reservation-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.badge {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #2a7cff;
+    color: #ffffff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+/* 병원/의사 텍스트 */
+.reservation-info strong {
+    font-size: 16px;
+}
+
+.reservation-info span {
+    font-size: 14px;
+    color: #fff;
+}
+
+/* 오른쪽 액션 */
+.reservation-action {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* ===== 예약 없음 메시지 ===== */
+.empty-message {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 50px 0;
+    text-align: center;
+    color: #888;
+    font-size: 15px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* ===== 페이지네이션 ===== */
+.pagination {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.pagination span {
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: #ffffff;
+    cursor: pointer;
+    border: 1px solid #e5e7eb;
+}
+
+.pagination .current {
+    background-color: #2a7cff;
+    color: #ffffff;
+    border-color: #2a7cff;
+}

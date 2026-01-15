@@ -1,0 +1,134 @@
+/* ==============================
+   회원정보 내부 섹션
+   ============================== */
+
+.profile-form {
+    max-width: 520px;
+}
+
+/* 입력 그룹 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #2a7cff;
+    box-shadow: 0 0 0 3px rgba(42, 124, 255, 0.15);
+}
+
+/* 에러 처리 */
+.form-group input.error {
+    border-color: #ef4444;
+}
+
+.error-message {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #ef4444;
+    display: none;
+}
+
+/* 버튼 영역 */
+.btn-group {
+    margin-top: 30px;
+    display: flex;
+    gap: 12px;
+}
+
+.btn-primary {
+    background-color: #2a7cff;
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btn-primary:hover {
+    background-color: #1f63d6;
+}
+
+.btn-danger {
+    background-color: #fff;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btn-danger:hover {
+    background-color: #ef4444;
+    color: #fff;
+}
+
+/* ==============================
+   팝업 (공통 사용 가능)
+   ============================== */
+
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.popup {
+    background: #fff;
+    padding: 32px;
+    border-radius: 16px;
+    width: 360px;
+    text-align: center;
+}
+
+.popup p {
+    margin-bottom: 22px;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.popup-btns {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-danger {
+        width: 100%;
+    }
+
+    .popup {
+        width: 90%;
+    }
+}

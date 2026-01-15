@@ -29,12 +29,21 @@
         <div class="header-right">
             <!-- 비로그인 상태 -->
             <div class="auth-guest" sec:authorize="isAnonymous()">
-                <a href="/login">로그인 및 회원가입</a>
+                <a href="/login" >로그인 및 회원가입</a>
             </div>
             <!-- 로그인 상태 -->
             <div class="auth-user" sec:authorize="isAuthenticated()">
-                <a href="/logout">로그아웃</a>
-                <a href="/mypage">마이페이지</a>
+                <a href="/logout" class="header-btn">로그아웃</a>
+
+                <!-- 관리자 -->
+                <a href="/" class="header-btn" sec:authorize="hasRole('ADMIN')">
+                    관리자 페이지
+                </a>
+
+                <!-- 일반 사용자 -->
+                <a th:href="@{/mypage}" class="header-btn" sec:authorize="hasRole('PATIENT')">
+                    마이페이지
+                </a>
             </div>
         </div>
 

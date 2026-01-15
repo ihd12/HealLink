@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보 | HealLink</title>
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+
+    <!-- 헤더 / 푸터 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
+    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
+
+    <!-- 마이페이지 사이드바 및 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mypage/sidebar.css}">
+
+    <!-- 회원정보 내부 섹션 -->
+    <link rel="stylesheet" th:href="@{/css/mypage/profile.css}">
+</head>
+<body>
+
+<div th:replace="mainpage/header :: header"></div>
+
+<main class="mypage-wrapper">
+
+    <div th:replace="mypage/sidebar :: sidebar('profile')"></div>
+
+    <!-- 컨텐츠 -->
+    <section class="mypage-content">
+
+        <h2 class="content-title">회원정보</h2>
+
+        <form class="profile-form" id="profileForm">
+
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" id="name">
+                <p class="error-message">이름을 입력해주세요.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email">
+                <p class="error-message">올바른 이메일을 입력해주세요.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">휴대폰 번호</label>
+                <input type="text" id="phone">
+                <p class="error-message">휴대폰 번호를 입력해주세요.</p>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn-primary" onclick="submitProfile()">
+                    수정하기
+                </button>
+                <button type="button" class="btn-danger" onclick="openWithdrawPopup()">
+                    회원탈퇴
+                </button>
+            </div>
+
+        </form>
+
+    </section>
+</main>
+
+<!-- 수정 완료 팝업 -->
+<div class="popup-overlay" id="successPopup">
+    <div class="popup">
+        <p>수정이 완료되었습니다.</p>
+        <button class="btn-primary" onclick="closePopup('successPopup')">확인</button>
+    </div>
+</div>
+
+<!-- 회원탈퇴 팝업 -->
+<div class="popup-overlay" id="withdrawPopup">
+    <div class="popup">
+        <p>
+            회원탈퇴를 진행하시겠습니까?<br>
+            탈퇴 후에는 계정 정보를 복구할 수 없습니다.
+        </p>
+        <div class="popup-btns">
+            <button class="btn-danger" onclick="confirmWithdraw()">예</button>
+            <button class="btn-primary" onclick="closePopup('withdrawPopup')">아니오</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function submitProfile() {
+        const inputs = document.querySelectorAll('.form-group input');
+        let hasError = false;
+
+        inputs.forEach(input => {
+            const error = input.nextElementSibling;
+            if (!input.value.trim()) {
+                input.classList.add('error');
+                error.style.display = 'block';
+                if (!hasError) input.focus();
+                hasError = true;
+            } else {
+                input.classList.remove('error');
+                error.style.display = 'none';
+            }
+        });
+
+        if (!hasError) {
+            document.getElementById('successPopup').style.display = 'flex';
+        }
+    }
+
+    function openWithdrawPopup() {
+        document.getElementById('withdrawPopup').style.display = 'flex';
+    }
+
+    function confirmWithdraw() {
+        closePopup('withdrawPopup');
+        alert('탈퇴가 완료되었습니다.');
+    }
+
+    function closePopup(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

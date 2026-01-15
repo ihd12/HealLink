@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지 | HealLink</title>
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+
+    <!-- 헤더 / 푸터 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
+    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
+
+    <!-- 마이페이지 사이드바 및 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mypage/sidebar.css}">
+
+    <!-- 마이페이지 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+</head>
+<body>
+
+<div th:replace="mainpage/header :: header"></div>
+
+<main class="mypage-wrapper">
+
+    <div th:replace="mypage/sidebar :: sidebar('reservation')"></div>
+
+    <!-- 컨텐츠 영역 -->
+    <section class="mypage-content">
+
+        <h2 class="content-title">내 예약</h2>
+
+        <p class="empty-message"
+           th:if="${#lists.isEmpty(reservations)}">
+            아직 예약된 진료가 없습니다.
+        </p>
+
+        <!-- 예약 목록 카드 -->
+        <div class="reservation-list">
+            <div class="reservation-card"
+                 th:each="reservation : ${reservations}">
+                <div class="reservation-info">
+                    <span class="badge"
+                          th:text="${reservation.hospitalName.substring(0,1)}">A</span>
+                    <div>
+                        <strong th:text="${reservation.hospitalName}">병원명</strong><br>
+                        <span th:text="${reservation.doctorName}">의사명</span>
+                    </div>
+                </div>
+                <div class="reservation-action">
+                    📅 <span th:text="${reservation.createdAt}"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 페이지네이션 (디자인용) -->
+        <div class="pagination">
+            <span>Previous</span>
+            <span class="current">1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>Next</span>
+        </div>
+
+    </section>
+</main>
+
+</body>
+</html>
