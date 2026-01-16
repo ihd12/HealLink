@@ -28,10 +28,10 @@
     color: #555;
 }
 
-/* ===== Form 스타일 ===== */
+/* ===== Form ===== */
 .join-container form {
     width: 100%;
-    max-width: 400px;
+    max-width: 520px;
     background-color: #fff;
     padding: 30px;
     border-radius: 12px;
@@ -51,25 +51,63 @@
     margin-bottom: 6px;
 }
 
-.join-container input[type="email"],
+/* ===== Input 공통 ===== */
 .join-container input[type="password"],
 .join-container input[type="text"],
 .join-container input[type="tel"] {
-    padding: 10px 12px;
+    padding: 12px 14px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 6px;
     outline: none;
     transition: border-color 0.3s;
+    box-sizing: border-box;
 }
 
 .join-container input:focus {
     border-color: #2f89fc;
 }
 
+/* ===== 이메일 영역 ===== */
+.email-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.email-wrapper > * {
+    min-width: 0;
+}
+
+.email-wrapper input[type="text"] {
+    flex: 1;
+}
+
+.email-wrapper .at {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1;
+}
+
+.email-wrapper select {
+    flex: 0 0 120px;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.email-wrapper select:focus {
+    border-color: #2f89fc;
+}
+
 /* 회원가입 버튼 */
 .join-container .join-btn {
-    width: 100%;
+    display: block;
+    width: 50%;
     padding: 12px 0;
     background-color: #2f89fc;
     color: #fff;
@@ -79,7 +117,8 @@
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s;
-    margin-top: 10px;
+    margin: 0 auto 0;
+    margin-top: 60px;
 }
 
 .join-container .join-btn:hover {
@@ -95,7 +134,7 @@
 }
 
 .join-container .signup-text a {
-    color: #555; /* 진한 회색 */
+    color: #555;
     text-decoration: none;
     font-weight: 500;
 }

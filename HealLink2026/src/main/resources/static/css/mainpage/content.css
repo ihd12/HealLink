@@ -1,7 +1,7 @@
 /* ===== 공통 섹션 스타일 ===== */
 section:not(.hero) {
     padding: 80px 20px; /* 상하 80px, 좌우 20px */
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -43,6 +43,9 @@ section:not(.hero) + section:not(.hero) {
     border-radius: 4px;
 }
 
+.search button:hover {
+    background-color: #0056b3; /* hover 시 */
+}
 
 
 /* ===== Hero Section ===== */
@@ -65,9 +68,14 @@ section:not(.hero) + section:not(.hero) {
 
 /* 왼쪽 텍스트 */
 .hero-text {
-    width: 55%;
+    width: 100%;
     z-index: 5;
     position: relative;
+}
+.slogan {
+    max-width: 1200px;
+    padding: 0 20px;
+    margin: 0 auto;
 }
 
 /* 오른쪽 이미지 */
@@ -102,9 +110,9 @@ section:not(.hero) + section:not(.hero) {
     transform: translateY(20px);
     transition: all 0.6s ease;
 
-    font-size: 56px;
+    font-size: 72px;
     font-weight: 700;
-    color: #0b1f44;
+    color: #153f8f;
 }
 
 .slogan-title.active {
@@ -115,7 +123,18 @@ section:not(.hero) + section:not(.hero) {
 .hero + section {
     margin-top: 60px; /* Hero와 다음 섹션 사이 간격 */
 }
+.slogan-sub {
+    margin-top: 12px;
+    margin-bottom: 24px;   /* desc와의 간격 */
+    font-size: 48px;
+}
 
+.slogan-desc {
+    margin-top: 0;         /* h2 기본 마진 제거 */
+    line-height: 1.6;
+    font-size: 16px;
+    color: #555;
+}
 
 
 /* ===== Platform Intro ===== */
@@ -149,7 +168,7 @@ section:not(.hero) + section:not(.hero) {
 
 .intro-right h2 {
     font-size: 32px;
-    color: #1a356f;
+    color: #153f8f;
     margin-bottom: 20px;
 }
 
@@ -181,7 +200,7 @@ section:not(.hero) + section:not(.hero) {
 .features strong {
     display: block;
     font-size: 18px;
-    color: #1a356f;
+    color: #153f8f;
     margin-bottom: 4px;
 }
 
@@ -199,9 +218,9 @@ section:not(.hero) + section:not(.hero) {
     text-align: center;
 }
 
-
 .section-title {
     font-size: 2.5rem;
+    color: #153f8f;
     margin-bottom: 40px;
 }
 
@@ -214,10 +233,13 @@ section:not(.hero) + section:not(.hero) {
 
 .service-card {
     background: #fff;
-    border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     padding: 30px;
     width: 300px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     transition: transform 0.3s;
 }
 
@@ -233,27 +255,58 @@ section:not(.hero) + section:not(.hero) {
 
 .service-title {
     font-size: 1.25rem;
+    color: #153f8f;
     margin-bottom: 10px;
 }
 
 .service-desc {
     font-size: 0.95rem;
     color: #555;
-    margin-bottom: 15px;
+    margin-bottom: 40px;
 }
 
 .service-link {
+    align-self: center;
     display: inline-block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #153f8f;
     text-decoration: none;
-    color: #fff;
-    background-color: #0078ff;
-    padding: 8px 16px;
-    border-radius: 8px;
-    transition: background 0.3s;
+    position: relative;
+    margin-top: auto;
+    padding-bottom: 4px;
+    transition: color 0.3s ease;
+}
+
+/* 기본 회색 밑줄 (항상 표시) */
+.service-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #ddd; /* 연한 회색 */
+}
+
+/* hover 시 나타나는 파란 밑줄 */
+.service-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: #2a7cff;
+    transition: width 0.3s ease;
 }
 
 .service-link:hover {
-    background-color: #0056b3;
+    color: #2a7cff;
+}
+
+.service-link:hover::after {
+    width: 100%;
 }
 
 /* ===== Notice Section ===== */

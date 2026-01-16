@@ -13,9 +13,8 @@ import java.util.List;
 public class MainpageService {
 
     private final NoticeRepository noticeRepository;
-    // 최신 공지 2개 반환 (더미 데이터)
     public List<NoticeDTO> getLatestNotices() {
-        List<NoticeDTO> list = noticeRepository.findAll().stream()
+        List<NoticeDTO> list = noticeRepository.findTop3ByOrderByCreatedAtDesc().stream()
                 .map(NoticeDTO::new)
                 .toList();
         return list;

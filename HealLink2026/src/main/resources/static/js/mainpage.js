@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
+// =========================
+// 1️⃣ 헤더 애니메이션
+// =========================
 const header = document.getElementById('header');
 let fixedAdded = false;
 

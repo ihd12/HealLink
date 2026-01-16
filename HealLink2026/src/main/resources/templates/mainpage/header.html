@@ -20,8 +20,8 @@
                 <li><a href="/">홈</a></li>
                 <li><a href="/">진료 예약</a></li>
                 <li><a href="/">약국 찾기</a></li>
-                <li><a href="/">건강 정보</a></li>
-                <li><a href="/">공지사항</a></li>
+                <li><a href="/healthinfo">건강 정보</a></li>
+                <li><a href="/admin/notice">공지사항</a></li>
             </ul>
         </nav>
 
@@ -37,11 +37,11 @@
 
                 <!-- 관리자 -->
                 <a href="/" class="header-btn" sec:authorize="hasRole('ADMIN')">
-                    관리자 페이지
+                    관리자 대시보드
                 </a>
 
                 <!-- 일반 사용자 -->
-                <a th:href="@{/mypage}" class="header-btn" sec:authorize="hasRole('PATIENT')">
+                <a th:href="@{/mypage/profile}" class="header-btn" sec:authorize="hasRole('PATIENT')">
                     마이페이지
                 </a>
             </div>

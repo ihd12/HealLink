@@ -36,15 +36,15 @@ header.fixed.show {
 
 /* ===== 좌측 로고 ===== */
 .header-left .logo {
-    font-size: 26px;
+    font-size: 32px;
     font-weight: 700;
-    color: #2a7cff;
+    color: #153f8f;
     text-decoration: none;
     letter-spacing: -0.5px;
 }
 
 .header-left .logo:hover {
-    color: #111;
+    color: #2a7cff;
 }
 
 /* ===== 중앙 네비게이션 ===== */

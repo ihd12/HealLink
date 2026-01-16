@@ -1,11 +1,17 @@
 package org.zerock.obj2026.member.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.zerock.obj2026.member.dto.UserDTO;
+import org.zerock.obj2026.member.service.UserService;
 
 @Controller
+@RequiredArgsConstructor
 public class UserController {
+
+    private final UserService userService;
 
     @GetMapping("/join")
     public String join() {
@@ -13,8 +19,9 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String joinProc() {
-        return "redirect:/";
+    public String joinProc(UserDTO dto) {
+        userService.save(dto);
+        return "redirect:/login";
     }
 
     @GetMapping("/login")

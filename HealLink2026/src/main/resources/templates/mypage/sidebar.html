@@ -8,15 +8,15 @@
 
     <ul class="sidebar-menu">
         <li>
-            <a th:href="@{/mypage}"
-               th:classappend="${activeMenu == 'reservation'} ? 'active'">
-                내 예약
-            </a>
-        </li>
-        <li>
             <a th:href="@{/mypage/profile}"
                th:classappend="${activeMenu == 'profile'} ? 'active'">
                 회원정보
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/mypage}"
+               th:classappend="${activeMenu == 'reservation'} ? 'active'">
+                내 예약
             </a>
         </li>
 

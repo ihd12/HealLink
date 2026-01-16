@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
+@Setter
 @ToString
 @Builder
 @NoArgsConstructor
@@ -29,12 +30,15 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
+
+    @Column(length = 20)
+    private String tel;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

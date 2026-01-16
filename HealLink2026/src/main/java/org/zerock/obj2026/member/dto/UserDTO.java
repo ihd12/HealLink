@@ -17,6 +17,7 @@ public class UserDTO {
     private String password;
     private String name;
     private UserRole role; // Using the enum
+    private String tel;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
