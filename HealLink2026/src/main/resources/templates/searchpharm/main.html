@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>HealLink - 약국 찾기</title>
+
+    <style>
+        /* 기본 레이아웃 및 폰트 설정 */
+        body { font-family: 'Pretendard', -apple-system, sans-serif; background-color: #f8f9fa; margin: 0; }
+        .container { width: 95%; max-width: 1200px; margin: 20px auto; text-align: center; }
+        .main-content { display: flex; gap: 20px; margin-top: 20px; position: relative; }
+
+        /* 지도 영역 관련 설정 */
+        #map-container {
+            position: relative;
+            flex: 2;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        #map { width: 100%; height: 100%; }
+
+        /* 중앙 조준점(Crosshair) 디자인 */
+        .center-pointer {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 24px; height: 24px;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            pointer-events: none; /* 지도 조작을 방해하지 않음 */
+        }
+        .center-pointer::before { /* 가로선 */
+            content: ''; position: absolute; top: 11px; left: 0;
+            width: 100%; height: 2px; background: rgba(0, 0, 0, 0.4);
+        }
+        .center-pointer::after { /* 세로선 */
+            content: ''; position: absolute; top: 0; left: 11px;
+            width: 2px; height: 100%; background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* 오른쪽 사이드 패널 설정 */
+        #side-panel {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            text-align: left;
+            background: #ffffff;
+            height: 600px;
+            overflow: hidden; /* 내부에서 개별 스크롤 처리 */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* '내 위치' 버튼 커스텀 */
+        .my-location-btn {
+            position: absolute; bottom: 20px; right: 20px; z-index: 10;
+            padding: 10px; background: #fff; border: 1px solid #ccc;
+            border-radius: 50%; cursor: pointer; width: 45px; height: 45px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-size: 20px;
+            transition: transform 0.2s;
+        }
+        .my-location-btn:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="color: #2c3e50;">💊 HealLink 약국 찾기</h1>
+
+    <div class="main-content">
+        <div id="map-container">
+            <div id="map"></div>
+            <div class="center-pointer"></div>
+            <button class="my-location-btn" onclick="moveToCurrentLocation()" title="내 위치로 이동">🎯</button>
+        </div>
+
+        <div id="side-panel">
+            <div id="side-panel-content" style="padding: 40px; text-align: center;">
+                <h3 style="color: #bdc3c7;">주변 약국을 찾는 중입니다</h3>
+                <p style="color: #bdc3c7;">지도를 움직이면 검색이 시작됩니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="|//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoJsKey}&libraries=services&autoload=false|"></script>
+<script th:src="@{/js/pharmacy-map.js}" charset="UTF-8"></script>
+
+<script>
+    window.onload = function() {
+        if (typeof initPharmacyMap === 'function') {
+            initPharmacyMap();
+        } else {
+            console.error("pharmacy-map.js 파일을 찾을 수 없습니다. 경로를 확인하세요.");
+        }
+    };
+</script>
+
+</body>
+</html>
