@@ -139,7 +139,7 @@ section:not(.hero) + section:not(.hero) {
 
 /* ===== Platform Intro ===== */
 .platform-intro {
-    background: #fff;
+
 }
 
 .intro-inner {
@@ -214,7 +214,6 @@ section:not(.hero) + section:not(.hero) {
 
 /* ===== Services Section ===== */
 .services-section {
-    background-color: #f9f9f9;
     text-align: center;
 }
 
