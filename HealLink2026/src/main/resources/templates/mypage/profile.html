@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보 | HealLink</title>
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+
+    <!-- 헤더 / 푸터 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
+    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
+
+    <!-- 마이페이지 사이드바 및 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mypage/sidebar.css}">
+
+    <!-- 회원정보 내부 섹션 -->
+    <link rel="stylesheet" th:href="@{/css/mypage/profile.css}">
+</head>
+<body>
+
+<div th:replace="mainpage/header :: header"></div>
+
+<main class="mypage-wrapper">
+
+    <div th:replace="mypage/sidebar :: sidebar('profile')"></div>
+
+    <!-- 컨텐츠 -->
+    <section class="mypage-content">
+
+        <h2 class="content-title">회원정보</h2>
+
+        <form class="profile-form" id="profileForm" action="/mypage/profile/update" method="post">
+
+            <!-- 이름 (수정 불가) -->
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" id="name" name="name"
+                       th:value="${user.name}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email"
+                       th:value="${user.email}" readonly>
+            </div>
+
+            <!-- 현재 비밀번호 -->
+            <div class="form-group">
+                <label for="currentPassword">현재 비밀번호</label>
+                <input type="password"
+                       id="currentPassword"
+                       name="currentPassword"
+                       placeholder="현재 비밀번호를 입력해주세요.">
+            </div>
+
+            <!-- 새 비밀번호 -->
+            <div class="form-group">
+                <label for="newPassword">새 비밀번호</label>
+                <input type="password"
+                       id="newPassword"
+                       name="newPassword"
+                       placeholder="변경할 비밀번호를 입력해주세요.">
+            </div>
+
+            <!-- 새 비밀번호 확인 -->
+            <div class="form-group">
+                <label for="confirmPassword">새 비밀번호 확인</label>
+                <input type="password"
+                       id="confirmPassword"
+                       name="confirmPassword"
+                       placeholder="한 번 더 입력해주세요.">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">휴대폰 번호</label>
+                <input type="text" id="phone" name="tel"
+                       th:value="${user.tel}">
+                <p class="error-message">휴대폰 번호를 입력해주세요.</p>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn-primary">수정하기</button>
+                <button type="button" class="btn-danger"  id="withdrawBtn">회원탈퇴</button>
+            </div>
+
+        </form>
+
+    </section>
+</main>
+
+<!-- 수정 완료 팝업 -->
+<div class="popup-overlay" id="successPopup">
+    <div class="popup">
+        <p>수정이 완료되었습니다.</p>
+        <button class="btn-primary" onclick="closePopup('successPopup')">확인</button>
+    </div>
+</div>
+
+<!-- 회원탈퇴 팝업 -->
+<div class="popup-overlay" id="withdrawPopup">
+    <div class="popup">
+        <p>
+            회원탈퇴를 진행하시겠습니까?<br>
+            탈퇴 후에는 계정 정보를 복구할 수 없습니다.
+        </p>
+        <div class="popup-btns">
+            <button class="btn-danger" id="withdrawConfirm">예</button>
+            <button class="btn-primary" id="withdrawCancel">아니오</button>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/mypage/mypage.js}"></script>
+</body>
+</html>

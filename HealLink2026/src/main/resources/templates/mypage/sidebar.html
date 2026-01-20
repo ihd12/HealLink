@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<aside class="mypage-sidebar" th:fragment="sidebar(activeMenu)">
+    <h2 class="sidebar-title">HealLink</h2>
+
+    <ul class="sidebar-menu">
+        <li>
+            <a th:href="@{/mypage/profile/check}"
+               th:classappend="${activeMenu == 'profile'} ? 'active'">
+                회원정보
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/mypage}"
+               th:classappend="${activeMenu == 'reservation'} ? 'active'">
+                내 예약
+            </a>
+        </li>
+
+    </ul>
+</aside>
+
+<script src="/js/mypage.js" defer></script>
+</body>
+</html>

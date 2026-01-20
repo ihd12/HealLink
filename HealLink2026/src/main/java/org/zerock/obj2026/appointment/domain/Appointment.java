@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.zerock.obj2026.department.domain.Department;
 import org.zerock.obj2026.doctor_schedule.domain.DoctorSchedule;
 import org.zerock.obj2026.patient.domain.Patient;
 
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "modal.css")
+@Table(name = "appointment")
 public class Appointment {
 
     @Id
@@ -37,6 +38,16 @@ public class Appointment {
     @Column(nullable = false)
     @Builder.Default
     private AppointmentStatus status = AppointmentStatus.RESERVED;
+
+    @Lob
+    private String symptom;
+
+    @Lob
+    private String note;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

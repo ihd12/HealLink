@@ -1,0 +1,112 @@
+/* ===== 예약 상세 페이지 CSS ===== */
+
+/* 전체 카드 */
+.reservation-detail-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 예약 캘린더 */
+.reservation-calendar {
+    background-color: #f0f4f8;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    font-size: 18px;
+    color: #555555;
+}
+
+/* 캘린더 placeholder */
+.calendar-placeholder {
+    display: inline-block;
+}
+
+/* 예약 정보 */
+.reservation-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 예약 번호, 이메일 */
+.reservation-visit,
+.reservation-email {
+    font-size: 16px;
+    color: #333333;
+    font-weight: 500;
+}
+
+/* 병원 / 의사 정보 */
+.reservation-hospital {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.reservation-hospital strong {
+    font-size: 18px;
+    color: #222222;
+}
+
+.reservation-hospital span {
+    font-size: 16px;
+    color: #555555;
+}
+
+/* 하단 버튼 영역 */
+.reservation-actions {
+    display: flex;
+    gap: 16px;
+}
+
+/* 버튼 공통 스타일 */
+.reservation-actions .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: 0.2s all;
+    text-align: center;
+}
+
+/* 예약 변경 버튼 */
+.btn-change {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-change:hover {
+    background-color: #45a049;
+}
+
+/* 예약 취소 버튼 */
+.btn-cancel {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #d32f2f;
+}
+
+/* 반응형: 모바일 */
+@media screen and (max-width: 768px) {
+    .reservation-detail-card {
+        padding: 16px;
+    }
+
+    .reservation-actions {
+        flex-direction: column;
+    }
+
+    .reservation-actions .btn {
+        width: 100%;
+    }
+}

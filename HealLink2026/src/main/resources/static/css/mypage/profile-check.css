@@ -1,0 +1,101 @@
+/* ===== 비밀번호 확인 페이지 ===== */
+
+.mypage-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+/* 제목 */
+.mypage-content .content-title {
+    font-size: 2.8rem;
+    color: #2f89fc;
+    margin-bottom: 18px;
+}
+
+/* 설명 문구 */
+.mypage-content .desc {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+/* ===== Form 박스 ===== */
+.mypage-content form {
+    width: 100%;
+    max-width: 380px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+}
+
+/* 입력 그룹 */
+.mypage-content .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+/* 라벨 */
+.mypage-content .form-group label {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+/* 입력창 */
+.mypage-content .form-group input {
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+/* 포커스 */
+.mypage-content .form-group input:focus {
+    border-color: #2f89fc;
+}
+
+/* readonly 입력 */
+.mypage-content .form-group input[readonly] {
+    background-color: #f5f7fa;
+    color: #777;
+    cursor: not-allowed;
+}
+
+/* 에러 메시지 */
+.mypage-content .error-message {
+    font-size: 0.9rem;
+    color: #e53935;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* 확인 버튼 */
+.mypage-content button.btn-primary {
+    width: 50%;
+    display: block;
+    padding: 12px 0;
+    background-color: #2f89fc;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin: 0 auto;
+}
+
+/* 버튼 hover */
+.mypage-content button.btn-primary:hover {
+    background-color: #1565d8;
+}
