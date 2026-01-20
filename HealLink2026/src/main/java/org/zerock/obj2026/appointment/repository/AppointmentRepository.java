@@ -8,7 +8,7 @@ import org.zerock.obj2026.appointment.domain.Appointment;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     
     /* 마이페이지 내예약 목록 조회 */
-    Page<Appointment> findByPatientUserEmailOrderByCreatedAtDesc(
+    Page<Appointment> findByPatientUserEmailOrderByAppointmentDateTimeDesc(
             String email,
             Pageable pageable
     );

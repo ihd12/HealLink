@@ -7,16 +7,18 @@
 
     <!-- 공통 CSS -->
     <link rel="stylesheet" th:href="@{/css/global.css}">
-
-    <!-- 헤더 / 푸터 CSS -->
     <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
     <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
 
-    <!-- 마이페이지 사이드바 및 공통 CSS -->
+    <!-- 마이페이지 CSS -->
     <link rel="stylesheet" th:href="@{/css/mypage/sidebar.css}">
 
     <!-- 회원정보 내부 섹션 -->
     <link rel="stylesheet" th:href="@{/css/mypage/profile.css}">
+
+    <!-- CSRF 토큰 -->
+<!--    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
 </head>
 <body>
 
@@ -32,18 +34,14 @@
         <h2 class="content-title">회원정보</h2>
 
         <form class="profile-form" id="profileForm" action="/mypage/profile/update" method="post">
-
-            <!-- 이름 (수정 불가) -->
             <div class="form-group">
                 <label for="name">이름</label>
-                <input type="text" id="name" name="name"
-                       th:value="${user.name}" readonly>
+                <input type="text" id="name" name="name" th:value="${user.name}" readonly>
             </div>
 
             <div class="form-group">
                 <label for="email">이메일</label>
-                <input type="email" id="email" name="email"
-                       th:value="${user.email}" readonly>
+                <input type="email" id="email" name="email" th:value="${user.email}" readonly>
             </div>
 
             <!-- 현재 비밀번호 -->
@@ -52,7 +50,10 @@
                 <input type="password"
                        id="currentPassword"
                        name="currentPassword"
-                       placeholder="현재 비밀번호를 입력해주세요.">
+                       placeholder="현재 비밀번호를 입력해주세요."
+                       th:classappend="${error} != null ? 'error' : ''">
+                <p class="error-message" th:text="${error}" th:if="${error}"></p>
+                <p class="error-message" id="error-password"></p>
             </div>
 
             <!-- 새 비밀번호 -->
@@ -81,36 +82,32 @@
             </div>
 
             <div class="btn-group">
-                <button type="submit" class="btn-primary">수정하기</button>
-                <button type="button" class="btn-danger"  id="withdrawBtn">회원탈퇴</button>
+                <button type="button" class="btn-primary" id="profileBtn">수정하기</button>
+                <button type="button" class="btn-danger" id="withdrawBtn">회원탈퇴</button>
             </div>
-
         </form>
-
     </section>
 </main>
 
-<!-- 수정 완료 팝업 -->
-<div class="popup-overlay" id="successPopup">
-    <div class="popup">
-        <p>수정이 완료되었습니다.</p>
-        <button class="btn-primary" onclick="closePopup('successPopup')">확인</button>
-    </div>
-</div>
-
 <!-- 회원탈퇴 팝업 -->
-<div class="popup-overlay" id="withdrawPopup">
+<div class="popup-overlay" id="withdrawPopup" style="display:none;">
     <div class="popup">
-        <p>
-            회원탈퇴를 진행하시겠습니까?<br>
-            탈퇴 후에는 계정 정보를 복구할 수 없습니다.
-        </p>
+        <p>회원탈퇴를 진행하시겠습니까?<br>탈퇴 후에는 계정 정보를 복구할 수 없습니다.</p>
         <div class="popup-btns">
             <button class="btn-danger" id="withdrawConfirm">예</button>
             <button class="btn-primary" id="withdrawCancel">아니오</button>
         </div>
     </div>
 </div>
-<script th:src="@{/js/mypage/mypage.js}"></script>
+
+<!-- 수정 완료 팝업 -->
+<div class="popup-overlay" id="successPopup" th:if="${success}" style="display:none;">
+    <div class="popup">
+        <p>수정이 완료되었습니다.</p>
+        <button class="btn-primary" onclick="closePopup('successPopup')">확인</button>
+    </div>
+</div>
+
+<script th:src="@{/js/mypage.js}"></script>
 </body>
 </html>

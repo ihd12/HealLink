@@ -60,7 +60,7 @@
 
             <!-- 좌측 이미지 -->
             <div class="intro-left">
-                <img src="/images/banner1.jpg" alt="HealLink 플랫폼 소개">
+                <img src="/images/medicine.jpg" alt="HealLink 플랫폼 소개">
             </div>
 
             <!-- 우측 텍스트 -->
@@ -78,14 +78,12 @@
                 <!-- 특징 리스트 -->
                 <ul class="features">
                     <li>
-                        <span class="icon">🏥</span>
                         <div>
                             <strong>인증된 병원</strong>
                             <p>모든 병원은 공식 인증을 받은 안전한 곳만 등록되어 있습니다</p>
                         </div>
                     </li>
                     <li>
-                        <span class="icon">💊️</span>
                         <div>
                             <strong>인증된 약국</strong>
                             <p>모든 약국은 공식 인증을 받은 안전한 곳만 등록되어 있습니다</p>
@@ -136,11 +134,32 @@
                     <p class="service-desc">공식 기준을 충족한
                         신뢰 가능한 의료·건강 정보를
                         쉽게 확인하세요</p>
-                    <a href="/" class="service-link">바로가기</a>
+                    <a href="/healthinfo" class="service-link">바로가기</a>
                 </div>
             </div>
         </div>
     </section>
+
+    <section class="platform-feature">
+        <div class="feature-inner">
+            <!-- 왼쪽 텍스트 -->
+            <div class="feature-text">
+                <h2>힐링크는 신뢰할 수 있는 의료 서비스를 제공합니다</h2>
+                <p>언제 어디서나 간편하게 예약하고, 의료진 정보를 확인할 수 있습니다.
+                    힐링크와 함께라면 더 빠르고 안전한 진료 경험을 누릴 수 있습니다.</p>
+                <div class="feature-stats">
+                    <span class="stat-number">10+</span>
+                    <span class="stat-text">년 경험</span>
+                </div>
+            </div>
+
+            <!-- 오른쪽 이미지 -->
+            <div class="feature-image">
+                <img src="/images/reservation.jpg" alt="플랫폼 이미지">
+            </div>
+        </div>
+    </section>
+
 
     <!-- Notice Section -->
     <section class="main-content">
@@ -152,18 +171,10 @@
                         <h4 th:text="${notice.title}">공지 제목</h4>
                         <!-- Thymeleaf 내장 함수로 content 요약 -->
                         <p th:text="${#strings.abbreviate(notice.content, 100)}">공지 요약</p>
-                        <a th:href="@{/notice/{id}(id=${notice.noticeId})}">자세히 보기</a>
+                        <a th:href="@{/admin/notice/{id}(id=${notice.noticeId})}">자세히 보기</a>
                     </div>
                 </div>
             </div>
-    </section>
-
-    <!-- Search Section -->
-    <section class="search">
-        <form action="/health-info" method="get">
-            <input type="text" name="query" placeholder="건강 정보 검색">
-            <button type="submit">검색</button>
-        </form>
     </section>
 
 </main>

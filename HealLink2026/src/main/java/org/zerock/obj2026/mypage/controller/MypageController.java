@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +27,6 @@ public class MypageController {
     @GetMapping("/profile/check")
     public String profileCheckPage(@AuthenticationPrincipal UserSecurityDTO userSecurityDTO,
                                    Model model) {
-        // 현재 로그인한 사용자 이메일 전달
         model.addAttribute("email", userSecurityDTO.getUser().getEmail());
         return "mypage/profile-check";
     }
@@ -57,17 +58,44 @@ public class MypageController {
         return "mypage/profile";
     }
 
-    // 회원정보 수정 페이지
+    // 회원정보 수정
     @PostMapping("/profile/update")
     public String updateProfile(@AuthenticationPrincipal UserSecurityDTO userSecurityDTO,
-                                @ModelAttribute MypageDTO dto) {
+                                @ModelAttribute MypageDTO dto,
+                                @RequestParam(required = false) String currentPassword,
+                                Model model) {
 
         if (userSecurityDTO != null) {
-            mypageService.updateUserProfile(userSecurityDTO.getUser().getUserId(), dto);
+            Long userId = userSecurityDTO.getUser().getUserId();
+            MypageDTO existingUser = mypageService.getUserProfile(userId);
+            model.addAttribute("user", existingUser); // 항상 user는 모델에 넣기
         }
-        return "redirect:/mypage/profile";
+
+        if (currentPassword == null || currentPassword.isBlank()) {
+            model.addAttribute("error", "현재 비밀번호를 입력해주세요.");
+            return "mypage/profile";
+        }
+
+        if (!mypageService.checkPassword(userSecurityDTO.getUser(), currentPassword)) {
+            model.addAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
+            return "mypage/profile";
+        }
+
+        mypageService.updateUserProfile(userSecurityDTO.getUser().getUserId(), dto);
+        model.addAttribute("success", "true");
+        return "mypage/profile";
     }
 
+    // 회원 탈퇴
+    @PostMapping("/profile/withdraw")
+    public ResponseEntity<Void> withdraw(@AuthenticationPrincipal UserSecurityDTO userSecurityDTO) {
+        if (userSecurityDTO != null) {
+            Long userId = userSecurityDTO.getUser().getUserId();
+            mypageService.withdrawUser(userId); // Service에서 DB 삭제
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
 
     // 내 예약 페이지
     @GetMapping
@@ -97,13 +125,8 @@ public class MypageController {
         if (userSecurityDTO == null) {
             return "redirect:/login";   // 로그인 안 된 경우
         }
-        String email = userSecurityDTO.getUser().getEmail();
         // 예약 상세 정보 조회
         MypageDTO reservation = mypageService.getReservationDetail(appointmentId);
-        // 예약이 없거나 본인 예약이 아닐 경우
-        if (reservation == null || !reservation.getEmail().equals(email)) {
-            return "redirect:/mypage?error=notfound";
-        }
 
         // 모델에 예약 정보 전달
         model.addAttribute(

@@ -74,20 +74,50 @@
     margin-top: 40px;
     display: flex;
     justify-content: center;
-    gap: 10px;
+    align-items: center;
+    gap: 8px;
     font-size: 14px;
 }
 
-.pagination span {
-    padding: 8px 12px;
-    border-radius: 6px;
+/* 페이지 버튼 공통 */
+.pagination a {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
     background-color: #ffffff;
-    cursor: pointer;
+    color: #333;
     border: 1px solid #e5e7eb;
+    text-decoration: none;
+    transition: all 0.2s ease;
 }
 
-.pagination .current {
+/* hover */
+.pagination a:hover {
+    background-color: #f1f5ff;
+    border-color: #2a7cff;
+    color: #2a7cff;
+}
+
+/* 현재 페이지 */
+.pagination a.current {
     background-color: #2a7cff;
     color: #ffffff;
     border-color: #2a7cff;
+    cursor: default;
+}
+
+/* 이전 / 다음 버튼 */
+.pagination a:first-child,
+.pagination a:last-child {
+    font-weight: 500;
+}
+
+/* 비활성 느낌 (선택사항) */
+.pagination a.current:hover {
+    background-color: #2a7cff;
+    color: #ffffff;
 }

@@ -48,7 +48,9 @@
                         </div>
                     </div>
                     <div class="reservation-action">
-                        📅 <span th:text="${reservation.createdAt}"></span>
+                        📅
+                        <span th:text="${reservation.appointmentDate}"></span>
+                        <span th:text="${reservation.appointmentTime}"></span>
                     </div>
                 </a>
             </div>
@@ -59,7 +61,7 @@
             <!-- 이전 -->
             <a th:if="${!reservations.first}"
                th:href="@{/mypage(page=${reservations.number - 1})}">
-                Previous
+                이전
             </a>
 
             <!-- 페이지 번호 -->
@@ -72,7 +74,7 @@
             <!-- 다음 -->
             <a th:if="${!reservations.last}"
                th:href="@{/mypage(page=${reservations.number + 1})}">
-                Next
+                다음
             </a>
 
         </div>

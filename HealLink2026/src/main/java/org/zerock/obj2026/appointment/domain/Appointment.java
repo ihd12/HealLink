@@ -45,6 +45,9 @@ public class Appointment {
     @Lob
     private String note;
 
+    @Column(nullable = false)
+    private LocalDateTime appointmentDateTime;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;

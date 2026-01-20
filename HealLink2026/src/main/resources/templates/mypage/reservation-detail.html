@@ -17,6 +17,9 @@
 
     <!-- 마이페이지 CSS -->
     <link rel="stylesheet" th:href="@{/css/mypage/reservation-detail.css}">
+
+    <!-- FullCalendar 라이브러리 -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js"></script>
 </head>
 <body>
 
@@ -31,38 +34,42 @@
     <!-- 컨텐츠 영역 -->
     <section class="mypage-content">
 
-        <h2 class="content-title">내 예약 상세</h2>
+        <div class="content-title-wrapper">
+            <a th:href="@{/mypage}" class="back-arrow">
+                ←
+            </a>
+            <h2 class="content-title">내 예약 상세</h2>
+        </div>
 
         <!-- 예약 상세 카드 -->
         <div class="reservation-detail-card">
 
             <!-- 상단 : 캘린더 -->
             <div class="reservation-calendar">
-                <!-- 실제 캘린더 JS 붙일 자리 -->
-                <div class="calendar-placeholder">
-                    📅 예약 캘린더
+                <div id="calendar"
+                     th:data-date="${reservation.appointmentDate}">
                 </div>
             </div>
 
             <!-- 예약 정보 -->
             <div class="reservation-info">
 
-                <!-- 예약 번호 -->
-                <p class="reservation-visit"
-                   th:text="'예약 번호: ' + ${reservation.appointmentId}">
-                    예약 번호: 1
-                </p>
-
-                <!-- 예약자 이메일 -->
-                <p class="reservation-email"
-                   th:text="'예약자 이메일: ' + ${reservation.email}">
-                    예약자 이메일
-                </p>
-
-                <!-- 병원 / 의사 -->
                 <div class="reservation-hospital">
                     <strong th:text="${reservation.hospitalName}">병원명</strong>
-                    <span th:text="${reservation.doctorName}">의사명</span>
+                    <span>
+                        <span th:text="${reservation.departmentName}">진료과명</span>
+                        <span th:text="${reservation.doctorName}">의사명</span>
+                    </span>
+                </div>
+                <div class="reservation-datetime">
+                    <div class="date">
+                        예약일 :
+                        <span th:text="${reservation.appointmentDate}">2026-01-25</span>
+                    </div>
+                    <div class="time">
+                        예약시간 :
+                        <span th:text="${reservation.appointmentTime}">14:30</span>
+                    </div>
                 </div>
 
             </div>
@@ -86,6 +93,9 @@
 
 <!-- 푸터 -->
 <div th:replace="mainpage/footer :: footer"></div>
+
+<!-- 예약 상세용 캘린더 -->
+<script th:src="@{/js/mypage.js}"></script>
 
 </body>
 </html>
