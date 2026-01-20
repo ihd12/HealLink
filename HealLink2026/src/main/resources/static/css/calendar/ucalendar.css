@@ -22,94 +22,162 @@ body {
     box-sizing: border-box;
 }
 
-/* 캘린더  */
+/* 캘린더 영역 (왼쪽) */
 .calendar-area {
+    flex: 1; /* 유동적으로 늘어남 */
     padding-right: 32px;
     border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 의사 정보 카드 */
+.doctor-info-card {
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 5px solid #007bff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.doctor-info-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.doctor-info-card p {
+    margin: 5px 0 10px;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.dept-badge {
+    display: inline-block;
+    background: #e9ecef;
+    color: #495057;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-right: 5px;
 }
 
 .calendar-container {
     width: 100%;
-    max-width: 400px;
+    display: flex;
+    justify-content: center; /* 달력 중앙 정렬 */
 }
 
-#datePicker {
-    width: auto;
-}
-
-/* 시간 선택  */
+/* 시간 선택 영역 (오른쪽) */
 .time-area {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 #timeGrid {
-    grid-column: 1 / span 2;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr); /* 3열로 변경 */
     gap: 10px;
+    margin-bottom: 20px;
 }
 
 .guide-text {
-    grid-column: span 2;
+    grid-column: 1 / -1; /* 전체 너비 차지 */
     font-size: 14px;
     color: #555;
     margin-bottom: 10px;
+    text-align: center;
+    font-weight: 500;
 }
 
 /* 시간 버튼  */
-#timeGrid button {
-    padding: 12px 0;
+.time-btn {
+    padding: 10px 0;
     font-size: 14px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
     background: #fff;
     cursor: pointer;
     transition: all 0.2s ease;
+    color: #333;
 }
 
-#timeGrid button:hover:not(:disabled) {
-    background: #e0f0ff;
-    transform: translateY(-1px);
+.time-btn:hover:not(:disabled) {
+    background: #e7f1ff;
+    border-color: #007bff;
+    color: #007bff;
 }
 
-#timeGrid button.selected {
+.time-btn.selected {
     background: #007bff;
     color: #fff;
     border-color: #007bff;
+    box-shadow: 0 4px 10px rgba(0,123,255,0.3);
 }
 
-#timeGrid button:disabled {
-    background: #f0f0f0;
-    color: #aaa;
+.time-btn:disabled {
+    background: #f5f5f5;
+    color: #ccc;
     cursor: not-allowed;
+    border-color: #eee;
+}
+
+.time-btn.reserved {
+    text-decoration: line-through;
+}
+
+/* 예약 폼 (증상 입력 + 버튼) */
+.reservation-form {
+    margin-top: auto; /* 아래쪽으로 밀기 */
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.reservation-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.reservation-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+    box-sizing: border-box; /* 패딩 포함 */
+    transition: border-color 0.2s;
+    margin-bottom: 15px;
+}
+
+.reservation-form textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
 }
 
 /* 예약 버튼 */
-.confirm-area {
-    border-left: 1px solid #eee;
-    padding-left: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 #confirmBtn {
     width: 100%;
     padding: 14px;
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: bold;
     border-radius: 8px;
     border: none;
     color: #fff;
-    background: linear-gradient(135deg, #007bff, #2196f3);
+    background: linear-gradient(135deg, #007bff, #0056b3);
     cursor: pointer;
-    box-shadow: 0 6px 18px rgba(0,123,255,0.35);
-    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 #confirmBtn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,123,255,0.45);
+    box-shadow: 0 6px 16px rgba(0,123,255,0.4);
 }

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>병원 목록 - HealLink</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <link rel="stylesheet" th:href="@{/css/reservation/GM.css}">
+    <link rel="stylesheet" th:href="@{/css/hospital/hospital.css}">
+    <link rel="stylesheet" th:href="@{/css/hospital/modal.css}">
+</head>
+<body>
+<div th:replace="mainpage/header :: header"></div>
+
+<main class="main-container">
+    <h1 class="page-title"> 병원 목록</h1>
+
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button type="button" class="btn-primary" id="openRegionModal">
+            지역 선택
+        </button>
+    </div>
+
+    <!-- 병원 데이터 표시 -->
+    <div th:if="${responseDTO != null and !responseDTO.dtoList.isEmpty()}">
+        <div class="hospital-grid">
+            <div class="hospital-card" th:each="hospital : ${responseDTO.dtoList}">
+
+                <div class="card-info">
+                    <div class="card-header-row">
+                        <a th:href="@{/hospitals/{hpid}(hpid=${hospital.hpid})}" class="hospital-link">
+                            <h3 class="hospital-name" th:text="${hospital.dutyName}">병원 이름</h3>
+                        </a>
+                        <span class="status-badge">진료중</span>
+                    </div>
+
+                    <div class="card-meta">
+                        <p class="hospital-addr" th:text="${hospital.dutyAddr}">주소 정보</p>
+                        <p class="hospital-phone" th:text="${hospital.dutyTel1}">전화번호</p>
+                        <div class="hospital-tags">
+                            <span>#전문의</span>
+                            <span>#친절한</span>
+                            <span>#주차가능</span>
+                        </div>
+                    </div>
+
+                    <div class="card-stats">
+                        <span class="rating">★ 4.9</span>
+                        <span class="review-count">리뷰 150+</span>
+                    </div>
+                </div>
+
+                <div class="card-image">
+                    <a th:href="@{/hospitals/{hpid}(hpid=${hospital.hpid})}">
+                        <img th:src="@{/images/hospital/Dororo.jpg}" alt="병원 이미지">
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div th:unless="${responseDTO != null and !responseDTO.dtoList.isEmpty()}"
+         style="text-align: center; padding: 80px 0;">
+        <p style="color: #999; font-size: 1.1rem;">검색된 병원이 없습니다.</p>
+    </div>
+    <!-- 페이징 처리 -->
+    <div th:if="${responseDTO != null and responseDTO.totalElements > 0}" class="pagination-container">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li th:if="${responseDTO.prev}">
+                    <a class="page-link"
+                       th:href="@{/hospitals/list(page=${responseDTO.start - 1}, size=${responseDTO.size}, keyword=${hPageRequestDTO.keyword}, types=${hPageRequestDTO.types})}">이전</a>
+                </li>
+                <li th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                    <a class="page-link" th:classappend="${num == responseDTO.page} ? 'active'"
+                       th:href="@{/hospitals/list(page=${num}, size=${responseDTO.size}, keyword=${hPageRequestDTO.keyword}, types=${hPageRequestDTO.types})}"
+                       th:text="${num}">1</a>
+                </li>
+                <li th:if="${responseDTO.next}">
+                    <a class="page-link"
+                       th:href="@{/hospitals/list(page=${responseDTO.end + 1}, size=${responseDTO.size}, keyword=${hPageRequestDTO.keyword}, types=${hPageRequestDTO.types})}">다음</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</main>
+
+
+<div th:replace="mainpage/Footer :: footer"></div>
+
+<div id="regionModalOverlay" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2>지역 선택</h2>
+            <button id="closeRegionModal" class="close-btn">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="path-nav">
+                <span id="step1" class="path-item">시/도</span>
+                <span class="path-divider">&gt;</span>
+                <span id="step2" class="path-item">시/군/구</span>
+                <span class="path-divider">&gt;</span>
+                <span id="step3" class="path-item">읍/면/동</span>
+            </div>
+
+            <div id="regionButtons" class="region-grid">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button id="btnReset" class="btn-reset">초기화</button>
+            <button id="btnConfirm" class="btn-confirm" disabled>지역을 선택해주세요</button>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/busan/BusanGuList.js}"></script>
+<script th:src="@{/js/busan/region.js}"></script>
+</body>
+</html>

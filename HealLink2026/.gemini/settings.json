@@ -1,0 +1,17 @@
+{
+  "general": {
+    "previewFeatures": true
+  },
+  "ide": {
+    "hasSeenNudge": true,
+    "enabled": true
+  },
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "model": {
+    "name": "gemini-3-pro"
+  }
+}

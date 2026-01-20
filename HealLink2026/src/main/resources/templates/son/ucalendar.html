@@ -4,33 +4,51 @@
     <meta charset="UTF-8">
     <title>예약 캘린더</title>
 
-<!--    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">-->
+    <!--    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}"> 헤더 주석-->
+    <!--    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}"> 푸터 주석 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
     <link rel="stylesheet" th:href="@{/css/calendar/ucalendar.css}">
 </head>
 <body>
 
-<!--<div th:replace="mainpage/header :: header"></div>-->
+<!--<div th:replace="/mainpage/header :: header"></div>  헤더인데 아직 주석으로 처리함 -->
 
 <div class="reservation-wrap">
     <div class="calendar-area left-column">
+        <div class="doctor-info-card">
+            <h3 th:text="${doctor.name} + ' 의사 선생님'">의사 이름</h3>
+            <p th:text="${doctor.hospitalName}">병원 이름</p>
+            <div style="margin-top: 5px;">
+                <span th:each="dept : ${doctor.departments}"
+                      th:text="${dept.name}"
+                      class="dept-badge">진료과</span>
+            </div>
+        </div>
+
         <div class="calendar-container">
             <div id="datePicker"></div>
         </div>
+        <input type="hidden" id="doctorId" th:value="${doctor.doctorId}">
+        <input type="hidden" id="departmentId" th:value="${doctor.departments.iterator().next().departmentId}">
     </div>
     <div class="time-area right-column">
         <div id="timeGrid">
             <p class="guide-text">날짜를 선택하세요</p>
         </div>
-        <div class="confirm-area">
-            <button id="confirmBtn" style="display:none;">예약하시겠습니까?</button>
+
+        <div class="reservation-form">
+            <label for="symptom">증상 및 요청사항</label>
+            <textarea id="symptom" rows="3" placeholder="어디가 불편하신가요? 간단히 적어주세요."></textarea>
+
+            <div class="confirm-area" style="margin-top: 15px;">
+                <button id="confirmBtn" style="display:none;">예약하시겠습니까?</button>
+            </div>
         </div>
     </div>
 </div>
 
-<!--<div th:replace="mainpage/footer :: footer"></div>-->
+<!--<div th:replace="/mainpage/footer :: footer"></div>  푸터인데 아직 주석으로 처리함-->
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>

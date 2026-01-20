@@ -13,6 +13,8 @@ import org.zerock.obj2026.doctor_schedule.repository.DoctorScheduleRepository;
 import org.zerock.obj2026.patient.domain.Patient;
 import org.zerock.obj2026.patient.repository.PatientRepository;
 
+import java.time.LocalDateTime;
+
 @Service
 @Transactional
 @Log4j2
@@ -28,7 +30,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Long createAppointment(Long scheduleId, Long patientId, Long departmentId, String symptom, String note) {
         log.info("Creating appointment for schedule: {}, patient: {}, department: {}", scheduleId, patientId, departmentId);
 
-        // 환자, 의사 스케줄, 진료과 엔티티를 조회
+        // 환자, 의사 스케줄, 진료과 엔티티를 조회 구간
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid patient ID: " + patientId));
 
@@ -38,13 +40,22 @@ public class AppointmentServiceImpl implements AppointmentService {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid department ID: " + departmentId));
 
-        // 이미 예약되었는지 확인하는 로직 추가 자리
+        if (!schedule.getIsAvailable()) {
+            throw new IllegalStateException("이미 예약이 완료된 시간입니다.");
+        }
+
+        // 예약 마감
+        schedule.setIsAvailable(false);
+
+
+        LocalDateTime appointmentDateTime = LocalDateTime.of(schedule.getWorkDate(), schedule.getStartTime());
 
         // 예약 생성
         Appointment appointment = Appointment.builder()
                 .patient(patient)
                 .schedule(schedule)
                 .department(department)
+                .appointmentDatetime(appointmentDateTime)
                 .symptom(symptom)
                 .note(note)
                 .build();

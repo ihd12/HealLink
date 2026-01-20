@@ -38,6 +38,9 @@ public class Appointment {
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
+    @Column(nullable = false)
+    private LocalDateTime appointmentDatetime;
+
     @Lob
     private String symptom;
 

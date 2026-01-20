@@ -1,4 +1,3 @@
-/* Reset / 기본 스타일 */
 * {
     margin: 0;
     padding: 0;
@@ -7,17 +6,15 @@
 
 body {
     font-family: 'Malgun Gothic', sans-serif;
-    background-color: #f5f5dc;
+    background-color: #ffffff;
     color: #333;
 }
 
-/* 공통 링크 */
 a {
     text-decoration: none;
     color: inherit;
 }
 
-/* 공통 버튼 */
 button {
     cursor: pointer;
     border: none;
@@ -25,7 +22,6 @@ button {
     transition: 0.2s;
 }
 
-/* 공통 Flex 헬퍼 클래스 */
 .flex {
     display: flex;
 }

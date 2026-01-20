@@ -23,16 +23,17 @@ import java.util.List;
         private int end; // 페이지 번호 끝값
         private boolean prev; // 이전버튼 여부
         private boolean next; // 다음버튼 여부
-
         public static <E> HpageResponseDTO<E> of(Page<E> page) {
             HpageResponseDTO<E> dto = new HpageResponseDTO<>();
             dto.totalPages = page.getTotalPages();
             dto.totalElements = page.getTotalElements();
             dto.dtoList = page.getContent();
-            dto.page = page.getNumber();
+
+            dto.page = page.getNumber() + 1;
+
             dto.size = page.getSize();
 
-            dto.end = (int)(Math.ceil(dto.page /10.0)*10);
+            dto.end = (int)(Math.ceil(dto.page / 10.0) * 10);
             dto.start = dto.end - 9;
             dto.end = Math.min(dto.end, dto.totalPages);
             dto.prev = dto.start > 1;
