@@ -20,6 +20,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +36,12 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Value("${org.zerock.upload.path}")
     private String uploadPath;
+    
+    // 랜덤 태그
+    private static final List<String> TAG_POOL = Arrays.asList(
+        "#친절해요", "#주차가능", "#전문의상주", "#최신시설", "#야간진료", 
+        "#깨끗해요", "#대기짧음", "#꼼꼼해요", "#과잉진료X", "#설명잘함"
+    );
 
     @Transactional
     @Override
@@ -104,6 +114,7 @@ public class HospitalServiceImpl implements HospitalService {
     private HospitalDTO entityToDTO(Hospital hospital) {
         HospitalDTO dto = modelMapper.map(hospital, HospitalDTO.class);
 
+        // 시간 포맷팅
         dto.setMonTime(getOperationTime(hospital.getDutyTime1s(), hospital.getDutyTime1c()));
         dto.setTueTime(getOperationTime(hospital.getDutyTime2s(), hospital.getDutyTime2c()));
         dto.setWedTime(getOperationTime(hospital.getDutyTime3s(), hospital.getDutyTime3c()));
@@ -112,6 +123,15 @@ public class HospitalServiceImpl implements HospitalService {
         dto.setSatTime(getOperationTime(hospital.getDutyTime6s(), hospital.getDutyTime6c()));
         dto.setSunTime(getOperationTime(hospital.getDutyTime7s(), hospital.getDutyTime7c()));
         dto.setHolidayTime(getOperationTime(hospital.getDutyTime8s(), hospital.getDutyTime8c()));
+        
+        double rating = 3.5 + (Math.random() * 1.5);
+        dto.setRating(Math.round(rating * 10) / 10.0); // 소수점 첫째자리까지 반올림
+
+        dto.setReviewCount((int) (Math.random() * 490) + 10);
+
+        List<String> shuffledTags = new ArrayList<>(TAG_POOL);
+        Collections.shuffle(shuffledTags);
+        dto.setTags(shuffledTags.subList(0, 3));
 
         return dto;
     }
@@ -123,7 +143,7 @@ public class HospitalServiceImpl implements HospitalService {
 
     private String formatTime(Integer time) {
         if (time == null) return null;
-        String str = String.format("%04d", time); // 900 -> "0900" 시간출력 위한변경
+        String str = String.format("%04d", time); // 900 -> "0900"
         return str.substring(0, 2) + ":" + str.substring(2); // "09:00"
     }
 }

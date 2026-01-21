@@ -38,16 +38,15 @@ public class DoctorServiceImpl implements DoctorService {
         return entityToDTO(doctor);
     }
 
-    // Entity -> DTO  로직 분리
     private DoctorDTO entityToDTO(Doctor doctor) {
-        // 기본 매핑
         DoctorDTO dto = modelMapper.map(doctor, DoctorDTO.class);
 
-        // 데이터 매핑 (User, Hospital, Departments)
         dto.setName(doctor.getUser().getName());
-        dto.setHospitalName(doctor.getHospital().getDutyName());
+        if (doctor.getHospital() != null) {
+            dto.setHospitalName(doctor.getHospital().getDutyName());
+            dto.setHospitalId(doctor.getHospital().getHpid()); // ID 매핑 복구
+        }
 
-        // 진료과 매핑
         dto.setDepartments(doctor.getDepartments().stream()
                 .map(dept -> modelMapper.map(dept, DepartmentDTO.class))
                 .collect(Collectors.toSet()));

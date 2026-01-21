@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
             imageInput.click();
         });
 
-        // 파일 업로드
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -24,11 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('이미지 파일만 업로드할 수 있습니다.');
                 return;
             }
-
             const formData = new FormData();
             formData.append('file', file);
 
-            // 서버 전송
             fetch(`/hospitals/${hospitalId}/image`, {
                 method: 'POST',
                 body: formData
