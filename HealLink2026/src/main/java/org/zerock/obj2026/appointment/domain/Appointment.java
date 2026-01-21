@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@ToString(exclude = {"patient", "schedule"})
+@ToString(exclude = {"patient", "schedule", "department"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,10 +34,12 @@ public class Appointment {
     @JoinColumn(name = "schedule_id", nullable = false, unique = true)
     private DoctorSchedule schedule;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
     @Column(nullable = false)
-    @Builder.Default
-    private AppointmentStatus status = AppointmentStatus.RESERVED;
+    private LocalDateTime appointmentDatetime;
 
     @Lob
     private String symptom;
@@ -45,12 +47,10 @@ public class Appointment {
     @Lob
     private String note;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private LocalDateTime appointmentDateTime;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "department_id", nullable = false)
-    private Department department;
+    @Builder.Default
+    private AppointmentStatus status = AppointmentStatus.RESERVED;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

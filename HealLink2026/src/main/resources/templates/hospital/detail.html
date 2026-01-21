@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${hospital.dutyName} + ' - 상세 정보'">병원 상세 정보</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <link rel="stylesheet" th:href="@{/css/hospital/hospital.css}">
+</head>
+<body>
+<div th:replace="mainpage/header :: header"></div>
+
+<main class="main-container">
+
+    <div class="detail-layout">
+
+        <div class="detail-content">
+
+            <div class="nav-header" style="margin-bottom: 20px;">
+                <a href="javascript:history.back()" class="btn-back">← 목록으로 돌아가기</a>
+            </div>
+
+            <div class="hospital-hero-image" id="heroImageArea">
+                <img id="previewImg" th:src="@{/images/hospital/default.jpg}" alt="병원 대표 이미지">
+
+                <div class="image-overlay">
+                    <span>📷 사진 변경하기</span>
+                </div>
+                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            </div>
+
+            <section class="info-section">
+                <h2 class="section-title">📢 병원 안내</h2>
+                <div class="hospital-info-box">
+
+                    <div class="info-content" th:if="${hospital.dutyInf != null or hospital.dutyEtc != null}">
+                        <p th:if="${hospital.dutyInf != null}" th:text="${hospital.dutyInf}"></p>
+                        <p th:if="${hospital.dutyEtc != null}" th:text="${hospital.dutyEtc}" class="info-etc"></p>
+                    </div>
+
+                    <div class="duty-time-info" style="margin-top: 25px; border-top: 1px dashed #ddd; padding-top: 20px;">
+                        <h3 style="font-size: 1rem; color: #333; margin-bottom: 8px;"> 기본 진료 시간</h3>
+
+                        <p style="font-size: 1.2rem; font-weight: 800; color: #333; margin-bottom: 6px;">
+                            08:00 ~ 18:00
+                        </p>
+
+                        <p style="font-size: 0.85rem; color: #888; font-weight: 500;">
+                            (자세한 운영시간은 병원측에 전화 바랍니다)
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="doctor-list-section" style="margin-top: 50px;">
+                <h2 class="section-title">
+                    👨‍⚕️ 의료진 예약하기
+                    <span class="badge-count" th:text="${doctors.size()}">0</span>
+                </h2>
+
+                <div th:if="${!doctors.isEmpty()}" class="doctor-grid">
+                    <div th:each="doctor : ${doctors}" class="doctor-card">
+                        <div class="doctor-profile-area">
+                            <div class="doctor-avatar"> </div>
+                            <h3 class="doctor-name" th:text="${doctor.name} + ' 원장님'">의사 이름</h3>
+
+                            <div class="doctor-dept-list">
+                                <span th:each="dept : ${doctor.departments}"
+                                      th:text="${dept.name}"
+                                      class="dept-tag">과목</span>
+                            </div>
+                        </div>
+
+                        <a th:href="@{/appointments/form/{id}(id=${doctor.doctorId})}" class="btn-book-full">
+                            예약하기
+                        </a>
+                    </div>
+                </div>
+
+                <div th:unless="${!doctors.isEmpty()}" class="no-doctor-box">
+                    <p>현재 예약 가능한 의료진 정보가 없습니다.</p>
+                </div>
+            </section>
+        </div>
+
+
+        <aside class="detail-sidebar">
+            <div class="sticky-box">
+
+                <div class="sidebar-header">
+                    <h1 th:text="${hospital.dutyName}">병원 이름</h1>
+                    <button class="btn-share">🔗</button>
+                </div>
+
+                <div class="sidebar-meta">
+                    <p class="category" th:text="${hospital.dutyDivNam}">진료과목</p>
+                    <div class="rating-row">
+                        <span class="status-badge-lg">진료중</span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="sidebar-info">
+                    <div class="info-row">
+                        <span class="icon">📍</span>
+                        <span th:text="${hospital.dutyAddr}">주소 정보</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="icon">📞</span>
+                        <span th:text="${hospital.dutyTel1}">02-0000-0000</span>
+                    </div>
+
+                    <div class="info-row warning" th:if="${hospital.dutyTel3 != null}">
+                        <span class="icon">🚨</span>
+                        <span>응급실: <span th:text="${hospital.dutyTel3}">번호</span></span>
+                    </div>
+                </div>
+
+                <div class="sidebar-actions">
+                    <button class="btn-primary-full" onclick="alert('아래 의료진 목록에서 의사 선생님을 선택해주세요.')">
+                        간편 예약
+                    </button>
+                </div>
+
+                <div class="ai-banner">
+                    진료전 상담을 받아보세요!
+                </div>
+
+            </div>
+        </aside>
+
+    </div>
+
+</main>
+
+<div th:replace="mainpage/Footer :: footer"></div>
+
+<script th:src="@{/js/hospital/detail.js}"></script>
+
+</body>
+</html>

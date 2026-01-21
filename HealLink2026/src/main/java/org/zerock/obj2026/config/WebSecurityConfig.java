@@ -55,7 +55,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 //                         permitAll로 되어있는 url은 로그인하지 않아도 통과
                         .requestMatchers("/","/login","/signup","/user"
-                                ,"/file/**")
+                                ,"/file/**", "/api/**", "/appointments/**", "/css/**", "/js/**", "/images/**")
                         .permitAll()
 //                         권한에 따라 접속 가능한 url 설정
 //                        .requestMatchers("/new-article").hasRole("ADMIN")

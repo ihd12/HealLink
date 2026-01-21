@@ -30,6 +30,15 @@ public class Hospital {
     @Column(length = 255)
     private String dutyAddr;
 
+    @Column(length = 50)
+    private String sido;
+
+    @Column(length = 50)
+    private String sigungu;
+
+    @Column(length = 50)
+    private String emd;
+
     @Column(length = 20)
     private String dutyTel1;
 
@@ -98,4 +107,13 @@ public class Hospital {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    public void configureRegionInfo(String sido, String sigungu, String emd) {
+        this.sido = sido;
+        this.sigungu = sigungu;
+        this.emd = emd;
+    }
+
+    public void updateImage(String fileName) {
+        this.dutyMapimg = fileName;
+    }
 }
