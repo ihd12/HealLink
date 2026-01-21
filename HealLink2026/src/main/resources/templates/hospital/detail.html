@@ -23,11 +23,6 @@
 
             <div class="hospital-hero-image" id="heroImageArea">
                 <img id="previewImg" th:src="@{/images/hospital/default.jpg}" alt="병원 대표 이미지">
-
-                <div class="image-overlay">
-                    <span>📷 사진 변경하기</span>
-                </div>
-                <input type="file" id="imageInput" accept="image/*" style="display: none;">
             </div>
 
             <section class="info-section">
@@ -137,8 +132,6 @@
 </main>
 
 <div th:replace="mainpage/Footer :: footer"></div>
-
-<script th:src="@{/js/hospital/detail.js}"></script>
 
 </body>
 </html>

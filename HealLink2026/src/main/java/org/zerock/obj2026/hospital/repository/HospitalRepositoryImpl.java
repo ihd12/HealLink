@@ -50,12 +50,20 @@ public class HospitalRepositoryImpl
             }
             query.where(builder);
         }
-        if (sido != null && !sido.isEmpty()||gu != null && !gu.isEmpty()||dong != null && !dong.isEmpty()) {
+        BooleanBuilder builder = new BooleanBuilder();
 
-            query.where(hospital.sido.eq(sido));
-            query.where(hospital.sigungu.eq(gu));
-            query.where(hospital.emd.eq(dong));
+        if (sido != null) {
+            builder.and(hospital.sido.eq(sido));
         }
+        if (gu != null) {
+            builder.and(hospital.sigungu.eq(gu));
+        }
+        if (dong != null) {
+            builder.and(hospital.emd.eq(dong));
+        }
+
+        query.where(builder);
+
         query.where(hospital.hpid.isNotNull()); // 기본 필터
 
         getQuerydsl().applyPagination(pageable, query);

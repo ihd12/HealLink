@@ -112,8 +112,4 @@ public class Hospital {
         this.sigungu = sigungu;
         this.emd = emd;
     }
-
-    public void updateImage(String fileName) {
-        this.dutyMapimg = fileName;
-    }
 }

@@ -160,7 +160,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("btnReset").addEventListener("click", initModal);
 
-    btnConfirm.addEventListener("click", () => {
+    btnConfirm.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         if (!state.sido) return;
 
         let url = `/hospitals/list?sido=${encodeURIComponent(state.sido)}`;

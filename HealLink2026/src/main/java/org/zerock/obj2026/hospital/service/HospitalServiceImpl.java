@@ -14,12 +14,6 @@ import org.zerock.obj2026.hospital.dto.HpageResponseDTO;
 import org.zerock.obj2026.hospital.repository.HospitalRepository;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,43 +31,10 @@ public class HospitalServiceImpl implements HospitalService {
     @Value("${org.zerock.upload.path}")
     private String uploadPath;
     
-    // 랜덤 태그
     private static final List<String> TAG_POOL = Arrays.asList(
         "#친절해요", "#주차가능", "#전문의상주", "#최신시설", "#야간진료", 
         "#깨끗해요", "#대기짧음", "#꼼꼼해요", "#과잉진료X", "#설명잘함"
     );
-
-    @Transactional
-    @Override
-    public void updateHospitalImage(String hpid, MultipartFile file) {
-        if (file.isEmpty()) {
-            throw new IllegalArgumentException("File is empty");
-        }
-
-        String originalName = file.getOriginalFilename();
-        String uuid = UUID.randomUUID().toString();
-        String saveName = uuid + "_" + originalName;
-        
-        Path savePath = Paths.get(uploadPath, saveName);
-
-        try {
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-            
-            file.transferTo(savePath);
-            
-            Hospital hospital = hospitalRepository.findById(hpid)
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid Hospital ID: " + hpid));
-            
-            hospital.updateImage(saveName); 
-
-        } catch (IOException e) {
-            log.error("Image upload failed", e);
-            throw new RuntimeException("Image upload failed", e);
-        }
-    }
 
     @Override
     public HpageResponseDTO<HospitalDTO> list(HPageRequestDTO requestDTO) {
@@ -124,14 +85,21 @@ public class HospitalServiceImpl implements HospitalService {
         dto.setSunTime(getOperationTime(hospital.getDutyTime7s(), hospital.getDutyTime7c()));
         dto.setHolidayTime(getOperationTime(hospital.getDutyTime8s(), hospital.getDutyTime8c()));
         
+        // 별점
         double rating = 3.5 + (Math.random() * 1.5);
-        dto.setRating(Math.round(rating * 10) / 10.0); // 소수점 첫째자리까지 반올림
+        dto.setRating(Math.round(rating * 10) / 10.0);
 
+        //  리뷰 수
         dto.setReviewCount((int) (Math.random() * 490) + 10);
 
+        //  태그
         List<String> shuffledTags = new ArrayList<>(TAG_POOL);
         Collections.shuffle(shuffledTags);
         dto.setTags(shuffledTags.subList(0, 3));
+        
+        // 병원 이미지
+        int randomImgNum = (int) (Math.random() * 10) + 1;
+        dto.setDutyMapimg("Dororo" + randomImgNum + ".jpg");
 
         return dto;
     }
