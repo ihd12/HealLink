@@ -10,7 +10,7 @@ import java.util.List;
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-                                // 제네릭 E타입 부여
+                // 제네릭 E타입 부여
     public class HpageResponseDTO<E> {
         private HPageRequestDTO pageRequestDTO;
         private int totalPages;

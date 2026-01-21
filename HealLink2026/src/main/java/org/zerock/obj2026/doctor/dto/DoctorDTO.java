@@ -13,9 +13,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class DoctorDTO {
     private Long doctorId;
-    private Long hospitalId; // (참조용 ID)
-    private String name;     // User 엔티티에서 가져올 이름
-    private String hospitalName; // Hospital 엔티티에서 가져올 병원명
+    private String hospitalId; // 참조용 ID
+    private String name;     // User 이름
+    private String hospitalName; // Hospital 병원명
 
     private String licenseNumber;
     private Integer careerYears;

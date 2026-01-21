@@ -7,7 +7,6 @@
     <link rel="stylesheet" th:href="@{/css/reservation/GM.css}">
     <link rel="stylesheet" th:href="@{/css/hospital/hospital.css}">
     <link rel="stylesheet" th:href="@{/css/hospital/modal.css}">
-    <!-- 헤더, 푸터 CSS -->
     <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
     <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
 </head>
@@ -23,10 +22,12 @@
         </button>
     </div>
 
-    <!-- 병원 데이터 표시 -->
+    <!-- 병원 데이터 -->
     <div th:if="${responseDTO != null and !responseDTO.dtoList.isEmpty()}">
         <div class="hospital-grid">
-            <div class="hospital-card" th:each="hospital : ${responseDTO.dtoList}">
+            <div class="hospital-card" th:each="hospital : ${responseDTO.dtoList}"
+                 th:onclick="|location.href='@{/hospitals/{hpid}(hpid=${hospital.hpid})}'|"
+                 style="cursor: pointer;">
 
                 <div class="card-info">
                     <div class="card-header-row">
@@ -40,22 +41,20 @@
                         <p class="hospital-addr" th:text="${hospital.dutyAddr}">주소 정보</p>
                         <p class="hospital-phone" th:text="${hospital.dutyTel1}">전화번호</p>
                         <div class="hospital-tags">
-                            <span>#전문의</span>
-                            <span>#친절한</span>
-                            <span>#주차가능</span>
+                            <span th:each="tag : ${hospital.tags}" th:text="${tag}">#태그</span>
                         </div>
                     </div>
 
                     <div class="card-stats">
-                        <span class="rating">★ 4.9</span>
-                        <span class="review-count">리뷰 150+</span>
+                        <span class="rating" th:text="'★ ' + ${hospital.rating}">★ 4.9</span>
+                        <span class="review-count" th:text="'리뷰 ' + ${hospital.reviewCount} + '+'">리뷰 150+</span>
                     </div>
                 </div>
 
                 <div class="card-image">
-                    <a th:href="@{/hospitals/{hpid}(hpid=${hospital.hpid})}">
-                        <img th:src="@{/images/hospital/Dororo.jpg}" alt="병원 이미지">
-                    </a>
+                    <img th:src="${hospital.dutyMapimg != null} ? @{'/hospitals/view/' + ${hospital.dutyMapimg}} : @{/images/hospital/Dororo.jpg}" 
+                         alt="병원 이미지"
+                         style="object-fit: cover;">
                 </div>
 
             </div>
@@ -66,6 +65,7 @@
          style="text-align: center; padding: 80px 0;">
         <p style="color: #999; font-size: 1.1rem;">검색된 병원이 없습니다.</p>
     </div>
+
     <!-- 페이징 처리 -->
     <div th:if="${responseDTO != null and responseDTO.totalElements > 0}" class="pagination-container">
         <nav aria-label="Page navigation">

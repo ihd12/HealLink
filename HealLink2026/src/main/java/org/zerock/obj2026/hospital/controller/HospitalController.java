@@ -19,6 +19,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.Map;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.zerock.obj2026.member.dto.UserSecurityDTO;
 import org.zerock.obj2026.doctor.dto.DoctorDTO;
@@ -31,6 +39,9 @@ public class HospitalController {
 
     private final HospitalService hospitalService;
     private final DoctorService doctorService;
+
+    @Value("${org.zerock.upload.path}")
+    private String uploadPath;
 
     @GetMapping("/list")
     public String list(HPageRequestDTO pageRequestDTO, Model model) {
@@ -54,7 +65,6 @@ public class HospitalController {
         model.addAttribute("hospital", hospitalDTO);
         model.addAttribute("doctors", doctorService.getDoctorsByHospital(hospitalId));
 
-        // 권한 체크: 로그인한 사용자가 이 병원의 의사인지 확인
         boolean isOwner = false;
         if (userSecurityDTO != null) {
             try {
@@ -71,7 +81,7 @@ public class HospitalController {
         return "hospital/detail";
     }
 
-    // 이미지 업로드 API
+// 이미지 업로드
     @ResponseBody
     @PostMapping("/{hospitalId}/image")
     public ResponseEntity<Map<String, String>> uploadImage(
@@ -85,6 +95,27 @@ public class HospitalController {
             log.error("Upload failed", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("result", "fail", "message", e.getMessage()));
+        }
+    }
+
+    // 이미지 조회
+    @ResponseBody
+    @GetMapping("/view/{fileName}")
+    public ResponseEntity<Resource> viewFile(@PathVariable String fileName) {
+        try {
+            Path filePath = Paths.get(uploadPath).resolve(fileName);
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_TYPE, Files.probeContentType(filePath));
+                return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            log.error("File view error", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
