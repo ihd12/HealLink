@@ -52,16 +52,6 @@ public class Appointment {
     @Builder.Default
     private AppointmentStatus status = AppointmentStatus.RESERVED;
 
-    @Lob
-    private String symptom;
-
-    @Lob
-    private String note;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "department_id", nullable = false)
-    private Department department;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

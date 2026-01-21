@@ -7,6 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/reservation/GM.css}">
     <link rel="stylesheet" th:href="@{/css/hospital/hospital.css}">
     <link rel="stylesheet" th:href="@{/css/hospital/modal.css}">
+    <!-- 헤더, 푸터 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
+    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
 </head>
 <body>
 <div th:replace="mainpage/header :: header"></div>
@@ -89,6 +92,7 @@
 <div th:replace="mainpage/Footer :: footer"></div>
 
 <div id="regionModalOverlay" class="modal-overlay">
+    <form action="/hospitals/list"
     <div class="modal-container">
         <div class="modal-header">
             <h2>지역 선택</h2>

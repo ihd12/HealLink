@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.zerock.obj2026.hospital.domain.Hospital;
 import org.zerock.obj2026.hospital.domain.QHospital;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.zerock.obj2026.hospital.dto.HPageRequestDTO;
 
 import java.util.List;
 
@@ -23,10 +24,17 @@ public class HospitalRepositoryImpl
     }
 
     @Override
-    public Page<Hospital> search(String[] types, String keyword, Pageable pageable) {
+    public Page<Hospital> search(HPageRequestDTO requestDTO) {
 
         QHospital hospital = QHospital.hospital;
         JPQLQuery<Hospital> query = from(hospital);
+
+        String[] types = requestDTO.splitTypes();
+        String keyword = requestDTO.getKeyword();
+        Pageable pageable = requestDTO.getPageable();
+        String sido = requestDTO.getSido();
+        String gu = requestDTO.getGu();
+        String dong = requestDTO.getDong();
 
         if (types != null && types.length > 0 && StringUtils.hasText(keyword)) {
             BooleanBuilder builder = new BooleanBuilder();
@@ -42,7 +50,12 @@ public class HospitalRepositoryImpl
             }
             query.where(builder);
         }
+        if (sido != null && !sido.isEmpty()||gu != null && !gu.isEmpty()||dong != null && !dong.isEmpty()) {
 
+            query.where(hospital.sido.eq(sido));
+            query.where(hospital.sigungu.eq(gu));
+            query.where(hospital.emd.eq(dong));
+        }
         query.where(hospital.hpid.isNotNull()); // 기본 필터
 
         getQuerydsl().applyPagination(pageable, query);
