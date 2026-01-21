@@ -1,5 +1,5 @@
 let selectedDate = null;
-let selectedTimeId = null; // 선택된 DoctorSchedule의 ID
+let selectedTimeId = null; // DoctorSchedule의 ID
 let doctorSchedules = [];   // 서버에서 받아온 스케줄 목록
 
 const grid = document.getElementById("timeGrid");
@@ -20,7 +20,6 @@ async function loadDoctorSchedules() {
         doctorSchedules = await response.json();
         console.log("Loaded schedules:", doctorSchedules);
         
-        // 오늘 날짜로 초기 렌더링
         const today = new Date().toISOString().split('T')[0];
         renderTimeSlots(today);
     } catch (error) {
@@ -36,7 +35,7 @@ function renderTimeSlots(dateStr) {
     grid.innerHTML = `<p class="guide-text">${dateStr} 예약 가능 시간</p>`;
     confirmBtn.style.display = "none";
 
-    // 해당 날짜의 스케줄만 필터링
+    // 해당 날짜의 스케줄
     const daySchedules = doctorSchedules.filter(s => s.workDate === dateStr);
 
     if (daySchedules.length === 0) {
@@ -44,7 +43,6 @@ function renderTimeSlots(dateStr) {
         return;
     }
 
-    // 시간순 정렬
     daySchedules.sort((a, b) => a.startTime.localeCompare(b.startTime));
 
     daySchedules.forEach(schedule => {
@@ -77,7 +75,6 @@ function renderTimeSlots(dateStr) {
 async function submitReservation() {
     if (!selectedTimeId) return;
 
-    // 예약 재확인
     if (!confirm("선택하신 시간으로 예약을 진행하시겠습니까?")) {
         return;
     }
@@ -85,7 +82,7 @@ async function submitReservation() {
     const deptIdInput = document.getElementById("departmentId");
     const departmentId = deptIdInput ? deptIdInput.value : 1; 
 
-    // 증상 입력값 가져오기
+    // 증상 가져오기
     const symptomInput = document.getElementById("symptom");
     const symptomValue = symptomInput ? symptomInput.value : "일반 진료";
 
@@ -131,5 +128,4 @@ flatpickr(document.getElementById("datePicker"), {
     onChange: (_, dateStr) => renderTimeSlots(dateStr)
 });
 
-// 페이지 로드 시 스케줄 로딩 시작
 document.addEventListener("DOMContentLoaded", loadDoctorSchedules);

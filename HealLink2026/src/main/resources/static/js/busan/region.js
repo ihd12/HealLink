@@ -90,14 +90,12 @@ function createBtn(text, enabled, onClick) {
     return btn;
 }
 
-// 선택 하이라이트
 function highlightBtn(target) {
     const btns = container.querySelectorAll('.region-btn');
     btns.forEach(b => b.classList.remove('active'));
     target.classList.add('active');
 }
 
-// 상단 경로 네비게이션 UI 업데이트
 function updatePathUI() {
     stepNav[1].innerText = state.sido || "시/도";
     stepNav[2].innerText = state.gu || "시/군/구";
