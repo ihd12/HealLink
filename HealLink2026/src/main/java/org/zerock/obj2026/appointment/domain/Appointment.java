@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@ToString(exclude = {"patient", "schedule"})
+@ToString(exclude = {"patient", "schedule", "department"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +33,19 @@ public class Appointment {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "schedule_id", nullable = false, unique = true)
     private DoctorSchedule schedule;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
+    @Column(nullable = false)
+    private LocalDateTime appointmentDatetime;
+
+    @Lob
+    private String symptom;
+
+    @Lob
+    private String note;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

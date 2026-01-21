@@ -3,31 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Hospital List</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/reservation/GM.css">
 </head>
 <body>
     <h1>Hospital List Page</h1>
-    <p>This is a placeholder for the hospital list.</p>
 
-    <!-- Hospital data will be displayed here -->
-    <div th:if="${responseDTO != null}">
+    <button type="button" class="region-select-button" id="openRegionModalBtn">지역 선택</button>
+
+    <!-- 병원 데이터는 여기에 표시될 예정입니다  -->
+    <div th:if="${responseDTO != null and !responseDTO.dtoList.isEmpty()}">
         <h2>Hospitals:</h2>
-        <ul>
-            <li th:each="hospital : ${responseDTO.dtoList}">
-                <a th:href="@{/hospitals/{hpid}(hpid=${hospital.hpid})}" th:text="${hospital.dutyName}">Hospital Name</a>
-                - <span th:text="${hospital.dutyAddr}">Hospital Address</span>
-            </li>
-        </ul>
-
-        <!-- Paging will go here -->
-        <div>
-            Page: <span th:text="${responseDTO.page}">1</span> / <span th:text="${responseDTO.totalPages}">1</span>
+        <div class="hospital-grid-container">
+            <div class="hospital-item" th:each="hospital : ${responseDTO.dtoList}">
+                <h3 th:text="${hospital.dutyName}">Hospital Name</h3>
+                <p>주소: <span th:text="${hospital.dutyAddr}">Hospital Address</span></p>
+                <p>전화번호: <span th:text="${hospital.dutyTel1}">Hospital Tel</span></p>
+                <a th:href="@{/hospitals/{hpid}(hpid=${hospital.hpid})}">상세보기</a>
+            </div>
         </div>
     </div>
-    <div th:unless="${responseDTO != null}">
-        <p>No hospital data available.</p>
+    <div th:unless="${responseDTO != null and !responseDTO.dtoList.isEmpty()}">
+        <p>병원을 찾을 수 없습니다.</p>
     </div>
 
-    <!-- Paging UI -->
     <div th:if="${responseDTO != null and responseDTO.totalPages > 0}">
         <nav aria-label="Page navigation">
             <ul class="pagination">

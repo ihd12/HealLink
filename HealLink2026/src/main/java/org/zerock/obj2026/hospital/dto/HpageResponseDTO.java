@@ -23,21 +23,23 @@ import java.util.List;
         private int end; // 페이지 번호 끝값
         private boolean prev; // 이전버튼 여부
         private boolean next; // 다음버튼 여부
+        public static <E> HpageResponseDTO<E> of(Page<E> page) {
+            HpageResponseDTO<E> dto = new HpageResponseDTO<>();
+            dto.totalPages = page.getTotalPages();
+            dto.totalElements = page.getTotalElements();
+            dto.dtoList = page.getContent();
 
-        public HpageResponseDTO(HPageRequestDTO hPageRequestDTO, Page<E> page){
-            this.pageRequestDTO = hPageRequestDTO;
-            this.totalPages = page.getTotalPages();
-            this.totalElements = page.getTotalElements();
-            this.dtoList = page.getContent();
-            this.page = hPageRequestDTO.getPage(); // 수정
-            this.size = hPageRequestDTO.getSize(); // 수정
+            dto.page = page.getNumber() + 1;
 
-            this.end = (int)(Math.ceil( this.page /10.0)*10);
-            this.start = this.end - 9;
-            this.end = Math.min(this.end, this.totalPages);
-            this.prev = this.start > 1;
-            this.next = totalElements > (long) this.end * this.size;
+            dto.size = page.getSize();
 
+            dto.end = (int)(Math.ceil(dto.page / 10.0) * 10);
+            dto.start = dto.end - 9;
+            dto.end = Math.min(dto.end, dto.totalPages);
+            dto.prev = dto.start > 1;
+            dto.next = dto.totalElements > (long) dto.end * dto.size;
+
+            return dto;
         }
     }
 

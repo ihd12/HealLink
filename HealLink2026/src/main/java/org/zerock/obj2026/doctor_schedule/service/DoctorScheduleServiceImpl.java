@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.zerock.obj2026.doctor.domain.Doctor;
+import org.zerock.obj2026.doctor.repository.DoctorRepository;
+
 @Service
 @Log4j2
 @RequiredArgsConstructor
@@ -20,11 +23,20 @@ import java.util.stream.Collectors;
 public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 
     private final DoctorScheduleRepository doctorScheduleRepository;
+    private final DoctorRepository doctorRepository; // 의사 조회를 위해 추가
     private final ModelMapper modelMapper;
 
     @Override
     public DoctorScheduleDTO register(DoctorScheduleDTO doctorScheduleDTO) {
         DoctorSchedule doctorSchedule = modelMapper.map(doctorScheduleDTO, DoctorSchedule.class);
+        
+        // doctorId를 사용하여 Doctor 조회 및 설정
+        if (doctorScheduleDTO.getDoctorId() != null) {
+            Doctor doctor = doctorRepository.findById(doctorScheduleDTO.getDoctorId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid doctor ID: " + doctorScheduleDTO.getDoctorId()));
+            doctorSchedule.setDoctor(doctor);
+        }
+
         DoctorSchedule savedSchedule = doctorScheduleRepository.save(doctorSchedule);
         return modelMapper.map(savedSchedule, DoctorScheduleDTO.class);
     }
@@ -63,7 +75,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
             if (doctorScheduleDTO.getIsAvailable() != null) {
                 doctorSchedule.setIsAvailable(doctorScheduleDTO.getIsAvailable());
             }
-// modify 메서드에서 updatedSchedule 변수 선언 후 초기화
+// updatedSchedule 변수 선언 후 초기화
             DoctorSchedule updatedSchedule = doctorScheduleRepository.save(doctorSchedule);
             return modelMapper.map(updatedSchedule, DoctorScheduleDTO.class);
         }

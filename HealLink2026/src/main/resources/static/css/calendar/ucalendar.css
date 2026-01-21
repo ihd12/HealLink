@@ -1,0 +1,183 @@
+/* 기본 스타일  */
+body {
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background: #f5f6fa;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* 전체 래퍼 */
+.reservation-wrap {
+    display: flex;
+    gap: 24px;
+    background: #fff;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    max-width: 900px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 캘린더 영역 (왼쪽) */
+.calendar-area {
+    flex: 1; /* 유동적으로 늘어남 */
+    padding-right: 32px;
+    border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 의사 정보 카드 */
+.doctor-info-card {
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 5px solid #007bff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.doctor-info-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.doctor-info-card p {
+    margin: 5px 0 10px;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.dept-badge {
+    display: inline-block;
+    background: #e9ecef;
+    color: #495057;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-right: 5px;
+}
+
+.calendar-container {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* 달력 중앙 정렬 */
+}
+
+/* 시간 선택 영역 (오른쪽) */
+.time-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#timeGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3열로 변경 */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.guide-text {
+    grid-column: 1 / -1; /* 전체 너비 차지 */
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* 시간 버튼  */
+.time-btn {
+    padding: 10px 0;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #333;
+}
+
+.time-btn:hover:not(:disabled) {
+    background: #e7f1ff;
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.time-btn.selected {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+    box-shadow: 0 4px 10px rgba(0,123,255,0.3);
+}
+
+.time-btn:disabled {
+    background: #f5f5f5;
+    color: #ccc;
+    cursor: not-allowed;
+    border-color: #eee;
+}
+
+.time-btn.reserved {
+    text-decoration: line-through;
+}
+
+/* 예약 폼 (증상 입력 + 버튼) */
+.reservation-form {
+    margin-top: auto; /* 아래쪽으로 밀기 */
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.reservation-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.reservation-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+    box-sizing: border-box; /* 패딩 포함 */
+    transition: border-color 0.2s;
+    margin-bottom: 15px;
+}
+
+.reservation-form textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+/* 예약 버튼 */
+#confirmBtn {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    color: #fff;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#confirmBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,123,255,0.4);
+}

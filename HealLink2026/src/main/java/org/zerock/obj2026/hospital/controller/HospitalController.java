@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.zerock.obj2026.doctor.service.DoctorService;
 import org.zerock.obj2026.hospital.dto.HPageRequestDTO;
 import org.zerock.obj2026.hospital.dto.HospitalDTO;
 import org.zerock.obj2026.hospital.dto.HpageResponseDTO;
@@ -19,13 +20,15 @@ import org.zerock.obj2026.hospital.service.HospitalService;
 public class HospitalController {
 
     private final HospitalService hospitalService;
+    private final DoctorService doctorService;
 
     @GetMapping("/list")
     public String list(HPageRequestDTO pageRequestDTO, Model model) {
         log.info("GET /hospitals/list - {}", pageRequestDTO);
         HpageResponseDTO<HospitalDTO> responseDTO = hospitalService.list(pageRequestDTO);
         model.addAttribute("responseDTO", responseDTO);
-        return "hospital/list";
+        model.addAttribute("hPageRequestDTO", pageRequestDTO); // 명시적으로 추가
+        return "hospital/hospitallist";
     }
 
     @GetMapping("/{hospitalId}")
@@ -33,14 +36,17 @@ public class HospitalController {
         log.info("GET /hospitals/{}", hospitalId);
         HospitalDTO hospitalDTO = hospitalService.getHospitalById(hospitalId);
         if (hospitalDTO == null) {
-    // 얘기치 못한 에러 발생시
             return "redirect:/hospitals/list";
         }
+        
+        // 해당 병원의 의사 목록 조회 (Service 사용)
         model.addAttribute("hospital", hospitalDTO);
+        model.addAttribute("doctors", doctorService.getDoctorsByHospital(hospitalId));
+        
         return "hospital/detail";
     }
 
-    @GetMapping // hospitals 경로로 요청이 오면 /hospitals/list로 리다이렉트
+    @GetMapping
     public String redirectToHospitalList() {
         return "redirect:/hospitals/list";
     }

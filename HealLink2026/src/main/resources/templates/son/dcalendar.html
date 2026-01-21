@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js"></script>
+
+    <link rel="stylesheet" href="../../static/css/calendar/calendar.css">
+</head>
+<body>
+
+<div id="calendar"></div>
+
+<div id="eventModal" class="modal">
+    <div class="modal-content">
+        <h3>일정 추가/수정</h3>
+        <input type="text" id="eventTitle" placeholder="일정 제목">
+        <div class="btns">
+            <button id="saveEvent">저장</button>
+            <button id="deleteEvent">삭제</button>
+            <button id="closeModal">취소</button>
+        </div>
+    </div>
+</div>
+<script src="/js/calendar/dcalendar.js"></script>
+</body>
+</html>
