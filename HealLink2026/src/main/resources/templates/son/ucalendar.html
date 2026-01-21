@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <title>예약 캘린더</title>
 
-    <!--    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}"> 헤더 주석-->
-    <!--    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}"> 푸터 주석 -->
+        <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
+        <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
     <link rel="stylesheet" th:href="@{/css/calendar/ucalendar.css}">
 </head>
 <body>
 
-<!--<div th:replace="/mainpage/header :: header"></div>  헤더인데 아직 주석으로 처리함 -->
+<div th:replace="/mainpage/header :: header"></div>
 
 <div class="reservation-wrap">
     <div class="calendar-area left-column">
@@ -48,7 +48,7 @@
     </div>
 </div>
 
-<!--<div th:replace="/mainpage/footer :: footer"></div>  푸터인데 아직 주석으로 처리함-->
+<div th:replace="/mainpage/footer :: footer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>

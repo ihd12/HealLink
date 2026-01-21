@@ -28,19 +28,19 @@ import java.util.List;
 
 public class HospitalDTO {
 
-    private String hpid;
+    private String hpid; // 병원ID
 
-    private String dutyName;
+    private String dutyName; // 병원이름
 
-    private String dutyAddr;
+    private String dutyAddr; // 병원 주소
 
 
 
-    private String sido;
+    private String sido; // 시/도
 
-    private String sigungu;
+    private String sigungu;// 시/군/구
 
-    private String emd;
+    private String emd;// 읍/면/동
 
 
 
@@ -50,27 +50,27 @@ public class HospitalDTO {
 
 
 
-    private String dutyDiv;
+    private String dutyDiv; // 병원 분류
 
     private String dutyDivNam; // 분류명
 
-    private String dutyEmcls;
+    private String dutyEmcls; // 응급의료기관코드
 
-    private String dutyEmclsName;
-
-
-
-    private String dutyInf; // 병원 정보
-
-    private String dutyEtc; // 기타 정보
-
-    private String dutyMapimg;
+    private String dutyEmclsName; // 응급의료기관코드명
 
 
 
-    private BigDecimal wgs84Lat;
+    private String dutyInf; // 기관설명상세
 
-    private BigDecimal wgs84Lon;
+    private String dutyEtc; // 비고
+
+    private String dutyMapimg;// 간이약도
+
+
+
+    private BigDecimal wgs84Lat;//병원위도
+
+    private BigDecimal wgs84Lon;//병원경도
 
 
 
@@ -106,11 +106,8 @@ public class HospitalDTO {
 
     private Integer dutyTime8c;
 
-
-
     // 운영시간
-
-    private String monTime;
+    private String monTime; //월 ~ 일 휴무
 
     private String tueTime;
 
@@ -127,7 +124,7 @@ public class HospitalDTO {
     private String holidayTime;
 
 
-// 병원소개 랜덤값
+    //  병원소개 랜덤값
     private Double rating;
 
     private Integer reviewCount;

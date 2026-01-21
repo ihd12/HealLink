@@ -48,6 +48,16 @@ public class HPageRequestDTO {
                 e.printStackTrace();
             }
         }
+        if (sido != null && !sido.isEmpty()) {
+            builder.append("&sido=" +sido);
+        }
+        if (gu != null && !gu.isEmpty()) {
+            builder.append("&gu=" +gu);
+        }
+        if (dong != null && !dong.isEmpty()) {
+            builder.append("&dong=" +dong);
+        }
+
         return builder.toString();
     }
 }

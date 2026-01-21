@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="card-image">
-                    <img th:src="${hospital.dutyMapimg != null} ? @{'/hospitals/view/' + ${hospital.dutyMapimg}} : @{/images/hospital/Dororo.jpg}" 
+                    <img th:src="@{'/images/hospital/' + ${hospital.dutyMapimg}}" 
                          alt="병원 이미지"
                          style="object-fit: cover;">
                 </div>
@@ -72,16 +72,16 @@
             <ul class="pagination">
                 <li th:if="${responseDTO.prev}">
                     <a class="page-link"
-                       th:href="@{/hospitals/list(page=${responseDTO.start - 1}, size=${responseDTO.size}, keyword=${hPageRequestDTO.keyword}, types=${hPageRequestDTO.types})}">이전</a>
+                       th:href="|@{/hospitals/list(page=${responseDTO.start - 1})}&${hPageRequestDTO.link}|">이전</a>
                 </li>
                 <li th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
                     <a class="page-link" th:classappend="${num == responseDTO.page} ? 'active'"
-                       th:href="@{/hospitals/list(page=${num}, size=${responseDTO.size}, keyword=${hPageRequestDTO.keyword}, types=${hPageRequestDTO.types})}"
+                       th:href="|@{/hospitals/list(page=${num})}&${hPageRequestDTO.link}|"
                        th:text="${num}">1</a>
                 </li>
                 <li th:if="${responseDTO.next}">
                     <a class="page-link"
-                       th:href="@{/hospitals/list(page=${responseDTO.end + 1}, size=${responseDTO.size}, keyword=${hPageRequestDTO.keyword}, types=${hPageRequestDTO.types})}">다음</a>
+                       th:href="|@{/hospitals/list(page=${responseDTO.end + 1})}&${hPageRequestDTO.link}|">다음</a>
                 </li>
             </ul>
         </nav>
@@ -92,31 +92,32 @@
 <div th:replace="mainpage/Footer :: footer"></div>
 
 <div id="regionModalOverlay" class="modal-overlay">
-    <form action="/hospitals/list"
-    <div class="modal-container">
-        <div class="modal-header">
-            <h2>지역 선택</h2>
-            <button id="closeRegionModal" class="close-btn">&times;</button>
-        </div>
-        
-        <div class="modal-body">
-            <div class="path-nav">
-                <span id="step1" class="path-item">시/도</span>
-                <span class="path-divider">&gt;</span>
-                <span id="step2" class="path-item">시/군/구</span>
-                <span class="path-divider">&gt;</span>
-                <span id="step3" class="path-item">읍/면/동</span>
+
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>지역 선택</h2>
+                <button id="closeRegionModal" class="close-btn">&times;</button>
             </div>
 
-            <div id="regionButtons" class="region-grid">
+            <div class="modal-body">
+                <div class="path-nav">
+                    <span id="step1" class="path-item">시/도</span>
+                    <span class="path-divider">&gt;</span>
+                    <span id="step2" class="path-item">시/군/구</span>
+                    <span class="path-divider">&gt;</span>
+                    <span id="step3" class="path-item">읍/면/동</span>
+                </div>
+
+                <div id="regionButtons" class="region-grid">
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="reset" id="btnReset" class="btn-reset">초기화</button>
+                <button type="button" id="btnConfirm" class="btn-confirm" disabled>지역 선택 완료</button>
             </div>
         </div>
-
-        <div class="modal-footer">
-            <button id="btnReset" class="btn-reset">초기화</button>
-            <button id="btnConfirm" class="btn-confirm" disabled>지역을 선택해주세요</button>
-        </div>
-    </div>
 </div>
 
 <script th:src="@{/js/busan/BusanGuList.js}"></script>
