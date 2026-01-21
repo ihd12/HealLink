@@ -55,7 +55,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .patient(patient)
                 .schedule(schedule)
                 .department(department)
-                .appointmentDatetime(appointmentDateTime)
+                .appointmentDateTime(appointmentDateTime) // 은하님이 MypageService서 대문자 T로 쓰셔서 변경 2026-01-21
                 .symptom(symptom)
                 .note(note)
                 .build();
