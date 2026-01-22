@@ -12,7 +12,6 @@
     font-weight: 800;
 }
 
-/* 병원 목록*/
 .hospital-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -26,7 +25,6 @@
     }
 }
 
-/* 카드 */
 .hospital-card {
     background-color: #ffffff;
     border: 1px solid #e5e5e5;
@@ -293,7 +291,6 @@
     color: #222; border-left: 5px solid #333; padding-left: 15px;
 }
 
-/* 병원 안내 박스 */
 .hospital-info-box {
     background: #fff; border: 1px solid #eee;
     border-radius: 12px; padding: 25px;
@@ -362,7 +359,6 @@
     font-weight: bold; font-size: 0.9rem;
 }
 
-/* 의료진 목록 */
 .doctor-grid {
     display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
 }
@@ -397,6 +393,18 @@
 .no-doctor-box {
     text-align: center; padding: 40px; background: #f9f9f9;
     border-radius: 10px; color: #888;
+}
+
+
+
+.status-open {
+    background: #eaffef;
+    color: #00c73c;
+}
+
+.status-closed {
+    background: #f1f3f5;
+    color: #868e96;
 }
 
 /* 모바일 반응형 */

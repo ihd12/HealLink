@@ -39,7 +39,7 @@ public class Appointment {
     private Department department;
 
     @Column(nullable = false)
-    private LocalDateTime appointmentDateTime; // 은하님이 MypageService서 대문자 T로 쓰셔서 변경 2026-01-21
+    private LocalDateTime appointmentDateTime;
 
     @Lob
     private String symptom;

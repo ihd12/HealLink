@@ -55,7 +55,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 //                         permitAll로 되어있는 url은 로그인하지 않아도 통과
                         .requestMatchers("/","/login","/signup","/user"
-                                ,"/file/**", "/api/**", "/appointments/**", "/css/**", "/js/**", "/images/**")
+                                ,"/file/**", "/api/**", "/css/**", "/js/**", "/images/**")
                         .permitAll()
 //                         권한에 따라 접속 가능한 url 설정
 //                        .requestMatchers("/new-article").hasRole("ADMIN")
@@ -72,6 +72,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/notice/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/healthinfo/**").hasRole("ADMIN")
                         // 나중에 전체 확정나면 permitAll을 적절하게 수정
+                        .requestMatchers( "/appointments/**","/patient/**", "/mypage/**").authenticated()
                         .anyRequest().permitAll())
 
 //                 form태그를 사용한 로그인 관련 설정

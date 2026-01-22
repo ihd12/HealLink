@@ -1,15 +1,12 @@
-/* 기본 스타일  */
 body {
     font-family: 'Noto Sans KR', Arial, sans-serif;
     background: #f5f6fa;
     margin: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
     min-height: 100vh;
 }
 
-/* 전체 래퍼 */
 .reservation-wrap {
     display: flex;
     gap: 24px;
@@ -20,18 +17,18 @@ body {
     max-width: 900px;
     width: 100%;
     box-sizing: border-box;
+
+    margin: auto;
 }
 
-/* 캘린더 영역 (왼쪽) */
 .calendar-area {
-    flex: 1; /* 유동적으로 늘어남 */
+    flex: 1;
     padding-right: 32px;
     border-right: 1px solid #eee;
     display: flex;
     flex-direction: column;
 }
 
-/* 의사 정보 카드 */
 .doctor-info-card {
     margin-bottom: 24px;
     padding: 20px;
@@ -66,10 +63,9 @@ body {
 .calendar-container {
     width: 100%;
     display: flex;
-    justify-content: center; /* 달력 중앙 정렬 */
+    justify-content: center;
 }
 
-/* 시간 선택 영역 (오른쪽) */
 .time-area {
     flex: 1;
     display: flex;
@@ -78,13 +74,13 @@ body {
 
 #timeGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3열로 변경 */
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     margin-bottom: 20px;
 }
 
 .guide-text {
-    grid-column: 1 / -1; /* 전체 너비 차지 */
+    grid-column: 1 / -1;
     font-size: 14px;
     color: #555;
     margin-bottom: 10px;
@@ -92,7 +88,6 @@ body {
     font-weight: 500;
 }
 
-/* 시간 버튼  */
 .time-btn {
     padding: 10px 0;
     font-size: 14px;
@@ -128,9 +123,8 @@ body {
     text-decoration: line-through;
 }
 
-/* 예약 폼 (증상 입력 + 버튼) */
 .reservation-form {
-    margin-top: auto; /* 아래쪽으로 밀기 */
+    margin-top: auto;
     padding-top: 20px;
     border-top: 1px solid #eee;
 }
@@ -151,7 +145,7 @@ body {
     resize: none;
     font-family: inherit;
     font-size: 0.95rem;
-    box-sizing: border-box; /* 패딩 포함 */
+    box-sizing: border-box;
     transition: border-color 0.2s;
     margin-bottom: 15px;
 }
@@ -162,7 +156,6 @@ body {
     box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
 }
 
-/* 예약 버튼 */
 #confirmBtn {
     width: 100%;
     padding: 14px;

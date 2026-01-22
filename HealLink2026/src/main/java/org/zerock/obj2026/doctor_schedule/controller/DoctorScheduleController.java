@@ -34,7 +34,7 @@ public class DoctorScheduleController {
         return new ResponseEntity<>(scheduleList, HttpStatus.OK);
     }
 
-    // 하나의 스케줄 상세 정보
+    // 스케줄 상세 정보
     @GetMapping("/{scheduleId}")
     public ResponseEntity<DoctorScheduleDTO> getSchedule(@PathVariable("scheduleId") Long scheduleId) {
         log.info("Getting schedule for scheduleId: {}", scheduleId);

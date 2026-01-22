@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.zerock.obj2026.member.domain.User;
+import org.zerock.obj2026.patient.dto.PatientDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -59,4 +60,15 @@ public class Patient {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    public void changePatient(PatientDTO dto){
+        if(dto.getPhone()!=null) this.phone = dto.getPhone();
+        if(dto.getBirthDate()!=null) this.birthDate = dto.getBirthDate();
+        if(dto.getGender()!=null) this.gender = dto.getGender();
+        if(dto.getAddress()!=null) this.address = dto.getAddress();
+        if(dto.getBloodType()!=null) this.bloodType = dto.getBloodType();
+        if(dto.getHasAllergies()!=null) this.hasAllergies = dto.getHasAllergies();
+        if(dto.getAllergies()!=null) this.allergies = dto.getAllergies();
+        if(dto.getMedicalHistory()!=null) this.medicalHistory = dto.getMedicalHistory();
+    }
 }

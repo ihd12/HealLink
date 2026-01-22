@@ -22,6 +22,9 @@ public class HospitalController {
     private final HospitalService hospitalService;
     private final DoctorService doctorService;
 
+    @org.springframework.beans.factory.annotation.Value("${kakao.js.key}")
+    private String kakaoJsKey;
+
     @GetMapping("/list")
     public String list(HPageRequestDTO pageRequestDTO, Model model) {
         log.info("GET /hospitals/list - {}", pageRequestDTO);
@@ -41,6 +44,7 @@ public class HospitalController {
         
         model.addAttribute("hospital", hospitalDTO);
         model.addAttribute("doctors", doctorService.getDoctorsByHospital(hospitalId));
+        model.addAttribute("kakaoJsKey", kakaoJsKey); // 카카오 키 전달
         
         return "hospital/detail";
     }

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 추가 정보 | HealLink</title>
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <link rel="stylesheet" th:href="@{/css/mainpage/header.css}">
+    <link rel="stylesheet" th:href="@{/css/mainpage/footer.css}">
+
+    <!-- 마이페이지 CSS -->
+    <link rel="stylesheet" th:href="@{/css/mypage/sidebar.css}">
+
+    <!-- 회원정보 내부 섹션 -->
+    <link rel="stylesheet" th:href="@{/css/mypage/patient.css}">
+
+    <!-- CSRF 토큰 -->
+    <!--    <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+</head>
+<body>
+
+<div th:replace="mainpage/header :: header"></div>
+
+<main class="mypage-wrapper">
+
+    <div th:replace="mypage/sidebar :: sidebar('patient')"></div>
+
+    <!-- 컨텐츠 -->
+    <section class="container">
+
+        <h2 class="content-title">회원 추가 정보</h2>
+
+        <form id="infoForm" th:action="@{/mypage/patient}" method="post">
+            <div class="form-group">
+                <label for="birthDate">생일</label>
+                <input type="date" id="birthDate" name="birthDate" th:value="${patient?.birthDate}">
+            </div>
+
+            <div class="form-group">
+                <label>성별</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="gender" value="남" checked>
+                        <span class="btn">남성</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="여">
+                        <span class="btn">여성</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">주소</label>
+                <input type="text" id="address" name="address" placeholder="주소를 입력해주세요" th:value="${patient?.address}">
+            </div>
+
+            <div class="form-group">
+                <label>혈액형</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="bloodType" value="A" th:checked="${patient?.bloodType=='A'}"><span class="btn">A</span></label>
+                    <label><input type="radio" name="bloodType" value="B" th:checked="${patient?.bloodType=='B'}"><span class="btn">B</span></label>
+                    <label><input type="radio" name="bloodType" value="AB" th:checked="${patient?.bloodType=='AB'}"><span class="btn">AB</span></label>
+                    <label><input type="radio" name="bloodType" value="O" th:checked="${patient?.bloodType=='O'}"><span class="btn">O</span></label>
+                </div>
+            </div>
+
+            <div class="form-group allergy-section" id="allergyBox">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="allergyCheck" name="hasAllergies" th:checked="${patient?.hasAllergies}">
+                    <span>알레르기가 있으신가요?</span>
+                </label>
+                <div id="historyArea" class="historyArea"  th:classappend="${patient?.hasAllergies ? 'show' : ''}">
+                    <label for="history" style="color: var(--primary-color);">상세 내용 입력</label>
+                    <textarea id="history" name="allergies" placeholder="어떤 알레르기인가요? 또는 주의해야 할 병력을 적어주세요.">[[${patient?.allergies}]]</textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="medicalHistory">병력 사항</label>
+                <textarea id="medicalHistory" name="medicalHistory" placeholder="과거 병력이나 주의사항을 입력해주세요">[[${patient?.medicalHistory}]]</textarea>
+            </div>
+
+            <button class="submit-btn">입력 완료</button>
+        </form>
+    </section>
+</main>
+
+<!-- 수정 완료 팝업 -->
+<div class="popup-overlay" id="successPopup" th:if="${success}" style="display:none;">
+    <div class="popup">
+        <p>수정이 완료되었습니다.</p>
+        <button class="btn-primary" onclick="closePopup('successPopup')">확인</button>
+    </div>
+</div>
+
+<script th:src="@{/js/patient.js}"></script>
+</body>
+</html>

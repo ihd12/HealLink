@@ -19,6 +19,12 @@
                 내 예약
             </a>
         </li>
+        <li>
+            <a th:href="@{/mypage/patient}"
+               th:classappend="${activeMenu == 'patient'} ? 'active'">
+                추가 정보
+            </a>
+        </li>
 
     </ul>
 </aside>

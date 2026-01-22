@@ -5,7 +5,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js"></script>
 
-    <link rel="stylesheet" href="../../static/css/calendar/calendar.css">
+    <link rel="stylesheet" th:href="@{/css/calendar/calendar.css}">
 </head>
 <body>
 
@@ -22,6 +22,9 @@
         </div>
     </div>
 </div>
-<script src="/js/calendar/dcalendar.js"></script>
+<script th:src="@{/js/calendar/dcalendar.js}"></script>
 </body>
 </html>
+
+
+<!--접속방법 http://localhost:8080/doctor/schedule-->

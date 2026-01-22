@@ -22,7 +22,6 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
     private final DoctorService doctorService;
 
-    // 예약 화면 띄우기
     @GetMapping("/appointments/form/{doctorId}")
     public String appointmentForm(@PathVariable Long doctorId, Model model) {
         DoctorDTO doctorDTO = doctorService.getDoctorDTO(doctorId);
@@ -44,14 +43,9 @@ public class AppointmentController {
 
         try {
             Long patientId = userSecurityDTO.getUser().getUserId();
+            appointmentDTO.setPatientId(patientId); // DTO에 환자 ID 설정
             
-            Long appointmentId = appointmentService.createAppointment(
-                    appointmentDTO.getScheduleId(),
-                    patientId,
-                    appointmentDTO.getDepartmentId(),
-                    appointmentDTO.getSymptom(),
-                    appointmentDTO.getNote()
-            );
+            Long appointmentId = appointmentService.createAppointment(appointmentDTO);
 
             return new ResponseEntity<>(appointmentId, HttpStatus.CREATED);
 

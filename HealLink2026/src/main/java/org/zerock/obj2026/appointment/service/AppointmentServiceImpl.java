@@ -5,9 +5,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.obj2026.appointment.domain.Appointment;
+import org.zerock.obj2026.appointment.dto.AppointmentDTO;
 import org.zerock.obj2026.appointment.repository.AppointmentRepository;
 import org.zerock.obj2026.department.domain.Department;
 import org.zerock.obj2026.department.repository.DepartmentRepository;
+import org.zerock.obj2026.doctor.domain.Doctor;
+import org.zerock.obj2026.doctor.repository.DoctorRepository;
 import org.zerock.obj2026.doctor_schedule.domain.DoctorSchedule;
 import org.zerock.obj2026.doctor_schedule.repository.DoctorScheduleRepository;
 import org.zerock.obj2026.patient.domain.Patient;
@@ -25,39 +28,90 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final PatientRepository patientRepository;
     private final DoctorScheduleRepository doctorScheduleRepository;
     private final DepartmentRepository departmentRepository;
+    private final DoctorRepository doctorRepository;
 
     @Override
-    public Long createAppointment(Long scheduleId, Long patientId, Long departmentId, String symptom, String note) {
-        log.info("Creating appointment for schedule: {}, patient: {}, department: {}", scheduleId, patientId, departmentId);
+    public Long createAppointment(AppointmentDTO dto) {
+        log.info("Creating appointment: {}", dto);
 
-        // 환자, 의사 스케줄, 진료과 엔티티를 조회 구간
+        Long patientId = dto.getPatientId();
+        Long departmentId = dto.getDepartmentId();
+
+        //  ID 유효성 검사
+        if (patientId == null) {
+            throw new IllegalArgumentException("Patient ID cannot be null (환자 정보가 없습니다)");
+        }
+        if (departmentId == null) {
+            throw new IllegalArgumentException("Department ID cannot be null (진료과 정보가 누락되었습니다)");
+        }
+        
+        // 동적 생성 시 의사 ID 체크
+        if (dto.getScheduleId() == null && dto.getDoctorId() == null) {
+             throw new IllegalArgumentException("Doctor ID cannot be null (의사 정보가 누락되었습니다)");
+        }
+
+        // 환자 및 진료과 조회
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid patient ID: " + patientId));
-
-        DoctorSchedule schedule = doctorScheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID: " + scheduleId));
 
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid department ID: " + departmentId));
 
+        // 스케줄 확보
+        DoctorSchedule schedule;
+
+        if (dto.getScheduleId() != null) {
+            // Case A: 스케줄 ID가 있는 경우
+            schedule = doctorScheduleRepository.findById(dto.getScheduleId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID: " + dto.getScheduleId()));
+        } else {
+            // Case B: 스케줄 ID가 없는 경우
+            if (dto.getDoctorId() == null || dto.getWorkDate() == null || dto.getStartTime() == null) {
+                throw new IllegalArgumentException("스케줄 생성을 위한 필수 정보(의사, 날짜, 시간)가 누락되었습니다.");
+            }
+
+            schedule = doctorScheduleRepository.findByDoctorDoctorId(dto.getDoctorId()).stream()
+                    .filter(s -> s.getWorkDate().equals(dto.getWorkDate()) && s.getStartTime().equals(dto.getStartTime()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (schedule == null) {
+                // 없으면 새로 생성
+                Doctor doctor = doctorRepository.findById(dto.getDoctorId())
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid doctor ID: " + dto.getDoctorId()));
+
+                java.time.LocalTime endTime = dto.getStartTime().plusMinutes(30);
+
+                schedule = DoctorSchedule.builder()
+                        .doctor(doctor)
+                        .workDate(dto.getWorkDate())
+                        .startTime(dto.getStartTime())
+                        .endTime(endTime)
+                        .isAvailable(true)
+                        .build();
+                
+                schedule = doctorScheduleRepository.save(schedule);
+                log.info("New schedule created dynamically: ID={}", schedule.getScheduleId());
+            }
+        }
+
+        // 예약 가능 여부 확인
         if (!schedule.getIsAvailable()) {
             throw new IllegalStateException("이미 예약이 완료된 시간입니다.");
         }
 
-        // 예약 마감
-        schedule.setIsAvailable(false);
-
+        // 예약
+        schedule.setIsAvailable(false); // 스케줄 마감 처리
 
         LocalDateTime appointmentDateTime = LocalDateTime.of(schedule.getWorkDate(), schedule.getStartTime());
 
-        // 예약 생성
         Appointment appointment = Appointment.builder()
                 .patient(patient)
                 .schedule(schedule)
                 .department(department)
-                .appointmentDateTime(appointmentDateTime) // 은하님이 MypageService서 대문자 T로 쓰셔서 변경 2026-01-21
-                .symptom(symptom)
-                .note(note)
+                .appointmentDateTime(appointmentDateTime)
+                .symptom(dto.getSymptom())
+                .note(dto.getNote())
                 .build();
 
         Appointment savedAppointment = appointmentRepository.save(appointment);

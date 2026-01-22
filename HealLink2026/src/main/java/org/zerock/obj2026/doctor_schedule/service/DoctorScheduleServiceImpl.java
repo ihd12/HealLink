@@ -46,7 +46,14 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     public List<DoctorScheduleDTO> getScheduleByDoctor(Long doctorId) {
         List<DoctorSchedule> scheduleList = doctorScheduleRepository.findByDoctorDoctorId(doctorId);
         return scheduleList.stream()
-                .map(doctorSchedule -> modelMapper.map(doctorSchedule, DoctorScheduleDTO.class))
+                .map(doctorSchedule -> {
+                    DoctorScheduleDTO dto = modelMapper.map(doctorSchedule, DoctorScheduleDTO.class);
+                    // DTO에 doctorId 명시적 설정
+                    if (doctorSchedule.getDoctor() != null) {
+                        dto.setDoctorId(doctorSchedule.getDoctor().getDoctorId());
+                    }
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 

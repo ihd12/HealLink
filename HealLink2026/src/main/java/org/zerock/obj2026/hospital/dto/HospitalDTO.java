@@ -64,7 +64,9 @@ public class HospitalDTO {
 
     private String dutyEtc; // 비고
 
-    private String dutyMapimg;// 간이약도
+    private String dutyMapimg;// 간이약도 (이미지 파일명)
+    
+    private String mapDescription; // 간이약도 (원본 텍스트)
 
 
 
@@ -122,6 +124,9 @@ public class HospitalDTO {
     private String sunTime;
 
     private String holidayTime;
+    
+    // 현재 진료 상태 (진료중, 진료마감, 휴진)
+    private String status;
 
 
     //  병원소개 랜덤값
@@ -130,9 +135,12 @@ public class HospitalDTO {
     private Integer reviewCount;
 
     private List<String> tags;
+    // 병원 랜덤 이미지 생성
+    private String img;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
 
 }
