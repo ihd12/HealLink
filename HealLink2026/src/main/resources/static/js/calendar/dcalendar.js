@@ -51,17 +51,33 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(response => response.json())
                 .then(data => {
                     const events = data.map(schedule => {
+                        let eventTitle = '';
+                        let bgColor = '';
+                        
+                        if (schedule.patientName) {
+                            // 예약된 경우: 환자 이름 + 증상
+                            eventTitle = `${schedule.patientName} (${schedule.symptom || '-'})`;
+                            bgColor = '#dc3545'; // 빨간색 (예약됨)
+                        } else {
+                            // 예약 없는 경우
+                            eventTitle = schedule.isAvailable ? '진료 가능' : '예약 마감';
+                            bgColor = schedule.isAvailable ? '#3788d8' : '#6c757d'; // 파랑 or 회색
+                        }
+
                         return {
                             id: schedule.scheduleId,
-                            title: schedule.isAvailable ? '진료 가능' : '휴진',
+                            title: eventTitle,
                             start: `${schedule.workDate}T${schedule.startTime}`,
                             end: `${schedule.workDate}T${schedule.endTime}`,
-                            backgroundColor: schedule.isAvailable ? '#3788d8' : '#ff9f89',
+                            backgroundColor: bgColor,
+                            borderColor: bgColor,
                             extendedProps: {
                                 workDate: schedule.workDate,
                                 startTime: schedule.startTime,
                                 endTime: schedule.endTime,
-                                isAvailable: schedule.isAvailable
+                                isAvailable: schedule.isAvailable,
+                                patientName: schedule.patientName, // 상세 정보용
+                                symptom: schedule.symptom
                             }
                         };
                     });

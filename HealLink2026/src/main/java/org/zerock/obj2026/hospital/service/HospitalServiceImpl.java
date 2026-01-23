@@ -109,8 +109,8 @@ public class HospitalServiceImpl implements HospitalService {
     
     private String calculateCurrentStatus(Hospital hospital) {
         java.time.LocalDateTime now = java.time.LocalDateTime.now();
-        int dayOfWeek = now.getDayOfWeek().getValue(); // 1(월) ~ 7(일)
-        int currentTime = now.getHour() * 100 + now.getMinute(); // 14:30 -> 1430
+        int dayOfWeek = now.getDayOfWeek().getValue();
+        int currentTime = now.getHour() * 100 + now.getMinute();
         
         Integer start = null;
         Integer end = null;
@@ -125,9 +125,7 @@ public class HospitalServiceImpl implements HospitalService {
             case 6: start = hospital.getDutyTime6s(); end = hospital.getDutyTime6c(); break;
             case 7: start = hospital.getDutyTime7s(); end = hospital.getDutyTime7c(); break;
         }
-        
-        // TODO: 공휴일 체크 로직은 별도 구현 필요 (일단 일요일과 구분 없이 처리)
-        
+
         if (start == null || end == null) {
             return "휴진";
         }

@@ -22,4 +22,7 @@ public class DoctorScheduleDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    // 예약 정보
+    private String patientName;
+    private String symptom;
 }
