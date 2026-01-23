@@ -29,8 +29,11 @@ public class NoticeSearchImpl extends QuerydslRepositorySupport implements Notic
         String[] types = pageRequestDTO.splitTypes();
 
         // 1. [추가] 일반 목록에서는 고정글을 제외 (중복 방지)
-        // 이렇게 해야 상단 고정 리스트와 데이터가 겹치지 않습니다.
-        query.where(notice.isPinned.eq(false));
+
+        // 이렇게 하면 검색어를 입력했을 때는 고정글도 검색 대상에 포함됩니다. (고정글이 검색 안되는 버그 수정) 2026-01-23
+        if (keyword == null || keyword.isEmpty()) {
+            query.where(notice.isPinned.eq(false));
+        }
 
         // 2. 삭제되지 않은 글만 (기존 조건)
         query.where(notice.isDeleted.eq(false));
