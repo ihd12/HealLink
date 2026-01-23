@@ -16,15 +16,23 @@
 <main class="main-container">
     <h1 class="page-title"> 병원 목록</h1>
 
-    <div class="input-group mt-3">
-        <input type="text" id="search-keyword" class="form-control" placeholder="제목 또는 내용으로 검색하세요">
-        <div class="input-group-append">
-            <button class="btn btn-dark" type="button" onclick="loadList(0)">검색</button>
-        </div>
-    </div>
+    <div class="search-container">
+        
+        <!-- 검색 폼 -->
+        <form action="/hospitals/list" method="get" class="search-form">
+            <select name="types" class="form-select">
+                <option value="n" th:selected="${hPageRequestDTO.types == 'n'}">병원명</option>
+                <option value="a" th:selected="${hPageRequestDTO.types == 'a'}">주소</option>
+                <option value="na" th:selected="${hPageRequestDTO.types == 'na'}">병원명+주소</option>
+            </select>
+            <input type="text" name="keyword" class="form-input" placeholder="병원명 또는 키워드를 입력하세요"
+                   th:value="${hPageRequestDTO.keyword}">
+            <button type="submit" class="btn-search">
+                검색
+            </button>
+        </form>
 
-    <div style="text-align: right; margin-bottom: 20px;">
-        <button type="button" class="btn-primary" id="openRegionModal">
+        <button type="button" class="btn-primary btn-region-select" id="openRegionModal">
             지역 선택
         </button>
     </div>

@@ -40,6 +40,11 @@
                     관리자 대시보드
                 </a>
 
+                <!-- 스케줄 관리(의사) -->
+                <a th:href="@{/doctor/schedule}" class="header-btn" sec:authorize="hasRole('DOCTOR')">
+                    스케줄 관리
+                </a>
+
                 <!-- 일반 사용자 -->
                 <a th:href="@{/mypage}" class="header-btn" sec:authorize="hasRole('PATIENT')">
                     마이페이지

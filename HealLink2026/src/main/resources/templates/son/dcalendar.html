@@ -14,7 +14,17 @@
 <div id="eventModal" class="modal">
     <div class="modal-content">
         <h3>일정 추가/수정</h3>
-        <input type="text" id="eventTitle" placeholder="일정 제목">
+        <input type="text" id="eventTitle" placeholder="일정 제목 (예: 진료 가능)">
+        
+        <div class="time-inputs" style="margin: 10px 0; display: flex; gap: 10px; align-items: center;">
+            <label style="display: flex; align-items: center; gap: 5px;">시작: <input type="time" id="startTime" value="08:00"></label>
+            <label style="display: flex; align-items: center; gap: 5px;">종료: <input type="time" id="endTime" value="18:00"></label>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label style="cursor: pointer;"><input type="checkbox" id="isAvailable" checked> 진료 가능 여부</label>
+        </div>
+
         <div class="btns">
             <button id="saveEvent">저장</button>
             <button id="deleteEvent">삭제</button>

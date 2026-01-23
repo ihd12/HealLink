@@ -1,6 +1,6 @@
 let selectedDate = null;
 let selectedTimeStr = null;
-let reservedSchedules = []; // 이미 예약된 스케줄 목록
+let reservedSchedules = [];
 
 const grid = document.getElementById("timeGrid");
 const confirmBtn = document.getElementById("confirmBtn");
@@ -42,13 +42,11 @@ function renderTimeSlots(dateStr) {
     const end = new Date(`2000-01-01T${String(endHour).padStart(2, '0')}:00:00`);
 
     while (current < end) {
-        // 점심시간 버튼제외
         if (current.getHours() === 12) {
             current.setMinutes(current.getMinutes() + intervalMinutes);
             continue;
         }
 
-        // HH:mm:ss 형식
         const timeStr = current.toTimeString().split(' ')[0];
         timeSlots.push(timeStr);
         current.setMinutes(current.getMinutes() + intervalMinutes);
@@ -59,7 +57,6 @@ function renderTimeSlots(dateStr) {
         .filter(s => s.workDate === dateStr)
         .map(s => s.startTime); // HH:mm:ss
 
-    // 버튼 생성
     timeSlots.forEach(time => {
         const btn = document.createElement("button");
         const displayTime = time.substring(0, 5); // HH:mm
@@ -98,7 +95,7 @@ async function submitReservation() {
     const doctorId = doctorIdInput.value;
     const deptIdInput = document.getElementById("departmentId");
     
-    // 진료과 ID 안전하게 가져오기 (없으면 기본값 1)
+    // 진료과 ID 가져오기 (없으면 기본값 1)
     let departmentId = 1;
     if (deptIdInput && deptIdInput.value) {
         const parsed = parseInt(deptIdInput.value);

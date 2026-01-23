@@ -100,9 +100,9 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new IllegalStateException("이미 예약이 완료된 시간입니다.");
         }
 
-        // 예약
         schedule.setIsAvailable(false); // 스케줄 마감 처리
 
+    //예약 메인기능
         LocalDateTime appointmentDateTime = LocalDateTime.of(schedule.getWorkDate(), schedule.getStartTime());
 
         Appointment appointment = Appointment.builder()
