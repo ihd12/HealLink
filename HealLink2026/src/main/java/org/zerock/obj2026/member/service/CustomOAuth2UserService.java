@@ -41,6 +41,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         .email(nickname)
                         .password(passwordEncoder.encode("1234"))
                         .role(UserRole.PATIENT) //user권한 고정
+                        .tel("010-1234-5678")
                         .build());
             }
             userSecurityDTO = new UserSecurityDTO(user, props);

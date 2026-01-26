@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.zerock.obj2026.member.domain.User;
 import org.zerock.obj2026.patient.dto.PatientDTO;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "patients")
-public class Patient {
+public class Patient implements Persistable<Long> {
 
     @Id
     @Column(name = "patient_id")
@@ -70,5 +71,15 @@ public class Patient {
         if(dto.getHasAllergies()!=null) this.hasAllergies = dto.getHasAllergies();
         if(dto.getAllergies()!=null) this.allergies = dto.getAllergies();
         if(dto.getMedicalHistory()!=null) this.medicalHistory = dto.getMedicalHistory();
+    }
+
+    @Override
+    public Long getId() {
+        return this.patientId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return this.createdAt == null;
     }
 }

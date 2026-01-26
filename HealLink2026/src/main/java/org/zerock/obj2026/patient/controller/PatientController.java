@@ -29,7 +29,7 @@ public class PatientController {
     // 환자 정보 DB 입력
     @PostMapping("/patient")
     public String postAddPatient(PatientDTO dto, @AuthenticationPrincipal UserSecurityDTO userSecurityDTO){
-        PatientDTO result = patientService.addPatient(dto, userSecurityDTO.getUser());
+        PatientDTO result = patientService.addPatient(dto, userSecurityDTO.getUser().getEmail());
         return "redirect:/mypage/patient";
     }
     // 환자 정보 수정 창 (사용안함)

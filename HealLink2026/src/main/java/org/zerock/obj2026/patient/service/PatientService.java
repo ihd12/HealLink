@@ -10,6 +10,8 @@ import org.zerock.obj2026.patient.domain.Patient;
 import org.zerock.obj2026.patient.dto.PatientDTO;
 import org.zerock.obj2026.patient.repository.PatientRepository;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class PatientService {
@@ -17,11 +19,16 @@ public class PatientService {
     private final UserRepository userRepository;
     // 환자 1명 정보 출력
     public PatientDTO getPatient(Long patientId){
-        return new PatientDTO(patientRepository.findById(patientId).get());
+        Optional<Patient> patient = patientRepository.findById(patientId);
+        if(patient.isPresent()){
+            return new PatientDTO(patient.get());
+        }
+        return new PatientDTO();
     }
 
-    public PatientDTO addPatient(PatientDTO dto, User user){
-        Patient patient = dto.convertPatient(user);
+    public PatientDTO addPatient(PatientDTO dto, String userId){
+        Optional<User> user = userRepository.findByEmail(userId);
+        Patient patient = dto.convertPatient(user.get());
         return new PatientDTO(patientRepository.save(patient));
     }
 
